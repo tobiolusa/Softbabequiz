@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #000;
+            animation: fadeIn 1s ease-in;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #555;
+            animation: fadeIn 1.5s ease-in;
+        }
+        .start-btn, .next-btn, .shop-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .start-btn:hover, .next-btn:hover, .shop-btn:hover {
+            transform: scale(1.05);
+            background-color: #333;
+        }
+        .quiz-section, .results-section {
+            display: none;
+            animation: slideIn 0.8s ease-in;
+        }
+        .quiz-question {
+            display: none;
+            margin: 20px 0;
+        }
+        .quiz-question.active {
+            display: block;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .option {
+            padding: 10px 20px;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover {
+            background: #000;
+            color: #fff;
+        }
+        .option.selected {
+            background: #000;
+            color: #fff;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Intro Section -->
+        <div id="intro">
+            <h1>Discover Your Softbabe Style</h1>
+            <p>“Jewelry is more than an accessory—it’s an expression of who you are. Take our Softbabe Style Quiz to find the perfect pieces that match your unique vibe!”</p>
+            <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz" class="quiz-section">
+            <div id="question-1" class="quiz-question active">
+                <h2>Your go-to outfit vibe?</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. Chic and expensive-looking</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. Clean and simple</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. Bold and unique</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. Always trendy</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. Structured and boss-like</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">F. Flowy and artistic</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">G. Soft and romantic</div>
+                </div>
+            </div>
+            <div id="question-2" class="quiz-question">
+                <h2>Favorite jewelry piece?</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. Gold statement necklace</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. Dainty gold bracelet</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. Large gemstone ring</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. Layered mixed-metal necklaces</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. Sleek and elegant watch</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">F. Beaded or nature-inspired jewelry</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">G. Heart-shaped pendant</div>
+                </div>
+            </div>
+            <div id="question-3" class="quiz-question">
+                <h2>What color jewelry do you love most?</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. Gold and diamonds</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. Classic gold or silver</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. Bold, vibrant colors</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. Whatever’s trending!</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. Silver, gold, or neutral tones</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">F. Earthy tones and gemstones</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">G. Soft pastels or rose gold</div>
+                </div>
+            </div>
+            <div id="question-4" class="quiz-question">
+                <h2>Pick your dream vacation spot</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. Paris, for luxury shopping</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. A peaceful beach retreat</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. A fashion-forward city like NYC</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. Tokyo, to explore cool fashion trends</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. A business-class flight to London</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">F. Bali, for a spiritual getaway</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">G. A romantic getaway in Santorini</div>
+                </div>
+            </div>
+            <div id="question-5" class="quiz-question">
+                <h2>Your ideal night-out look?</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. A designer dress with gold accessories</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. A monochrome outfit with minimal jewelry</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. A bold power outfit with statement earrings</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. A trendy, influencer-inspired look</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. A fitted dress with sleek gold accents</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">F. A flowy, artistic maxi dress</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">G. A soft, feminine dress with delicate jewelry</div>
+                </div>
+            </div>
+            <button class="next-btn" onclick="nextQuestion()">Next</button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="results-section">
+            <h1 id="result-title">You’re a [Softbabe Style]!</h1>
+            <p id="result-desc"></p>
+            <p id="result-jewelry"></p>
+            <button class="shop-btn">Shop Your Style</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let answers = {};
+
+        function startQuiz() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+        }
+
+        function selectOption(element, style) {
+            const siblings = element.parentElement.querySelectorAll('.option');
+            siblings.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            answers[`q${currentQuestion}`] = style;
+        }
+
+        function nextQuestion() {
+            if (!answers[`q${currentQuestion}`]) {
+                alert('Please select an option before moving on!');
+                return;
+            }
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            if (currentQuestion <= 5) {
+                document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+
+            // Tally the most frequent style
+            const styleCounts = {};
+            for (let i = 1; i <= 5; i++) {
+                const style = answers[`q${i}`];
+                styleCounts[style] = (styleCounts[style] || 0) + 1;
+            }
+            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b);
+
+            // Display results
+            document.getElementById('result-title').innerText = `You’re a ${dominantStyle}!`;
+            document.getElementById('result-desc').innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
+            document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
+        }
+    </script>
+</body>
+</html>
