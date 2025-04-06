@@ -15,6 +15,18 @@
             flex-direction: column;
             min-height: 100vh;
         }
+        header {
+            background: #fff;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        header .logo {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+        }
         .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; text-align: center; flex: 1 0 auto; }
         h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
         h2 { font-size: 1.5em; color: #333; margin-bottom: 20px; }
@@ -91,6 +103,12 @@
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 60px;">
+        </div>
+    </header>
+
     <div class="container">
         <div id="intro">
             <h1>Discover Your Softbabe Style</h1>
@@ -102,7 +120,6 @@
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
                 <div class="progress-dots">
-                    <div class="progress-dot"></div>
                     <div class="progress-dot"></div>
                     <div class="progress-dot"></div>
                     <div class="progress-dot"></div>
@@ -162,7 +179,7 @@
             </div>
             <div id="question-5" class="quiz-question">
                 <h2>Your ideal night-out look?</h2>
-                <div class="options">
+                <div class Lagos="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. A designer dress with gold accessories</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. A monochrome outfit with minimal jewelry</div>
                     <div class="option" onclick="selectOption(this, 'Statement Queen')">C. A bold power outfit with statement earrings</div>
@@ -184,7 +201,6 @@
                     <div class="option" onclick="selectOption(this, 'Bohemian')">G. Chill & artsy</div>
                 </div>
             </div>
-         
             <div class="button-container">
                 <button class="back-btn" onclick="prevQuestion()">Back</button>
                 <button class="next-btn" onclick="nextQuestion()">Next</button>
@@ -196,7 +212,6 @@
             <p id="result-desc"></p>
             <p id="result-jewelry"></p>
             <button class="shop-btn">Shop Your Style</button>
-            <!-- Social share buttons added here -->
             <div class="share-buttons">
                 <a href="#" id="share-twitter" class="share-btn twitter" target="_blank">Share on Twitter</a>
                 <a href="#" id="share-facebook" class="share-btn facebook" target="_blank">Share on Facebook</a>
@@ -239,7 +254,7 @@
             }
             document.getElementById(`question-${currentQuestion}`).classList.remove('active');
             currentQuestion++;
-            if (currentQuestion <= 7) {
+            if (currentQuestion <= 6) {
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
                 updateProgress();
             } else {
@@ -259,7 +274,7 @@
         function updateProgress() {
             const progressBar = document.getElementById('progress-bar');
             const progressDots = document.querySelectorAll('.progress-dot');
-            const progressPercentage = ((currentQuestion - 1) / 7) * 100;
+            const progressPercentage = ((currentQuestion - 1) / 6) * 100;
             progressBar.style.width = `${progressPercentage}%`;
             progressDots.forEach((dot, index) => {
                 if (index < currentQuestion) dot.classList.add('active');
@@ -272,7 +287,7 @@
             document.getElementById('results').style.display = 'block';
 
             const styleCounts = {};
-            for (let i = 1; i <= 7; i++) {
+            for (let i = 1; i <= 6; i++) {
                 const style = answers[`q${i}`];
                 styleCounts[style] = (styleCounts[style] || 0) + 1;
             }
@@ -282,15 +297,14 @@
             document.getElementById('result-desc').innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
             document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
 
-            // Social media share URLs
             const shareText = `I’m a ${dominantStyle}! Discover your Softbabe Style at`;
-            const quizUrl = window.location.href; // Current page URL
+            const quizUrl = window.location.href;
             const encodedText = encodeURIComponent(shareText);
             const encodedUrl = encodeURIComponent(quizUrl);
 
             document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=SoftbabeStyle`;
-            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
-            document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`; // Note: Instagram sharing is limited on web
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"e=${encodedText}`;
+            document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
         }
     </script>
 </body>
