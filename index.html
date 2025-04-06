@@ -17,9 +17,11 @@
         }
         header {
             background: #fff;
-            padding: 20px 0;
-            text-align: center;
+            padding: 20px;
             border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         header .logo {
             width: 60px;
@@ -31,7 +33,7 @@
         h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
         h2 { font-size: 1.5em; color: #333; margin-bottom: 20px; }
         p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
-        .start-btn, .next-btn, .shop-btn, .back-btn {
+        .start-btn, .next-btn, .shop-btn, .back-btn, .header-shop-btn {
             padding: 15px 40px; font-size: 1.1em; background-color: #000; color: #fff;
             border: none; border-radius: 25px; cursor: pointer; transition: transform 0.3s, background 0.3s;
             margin: 10px; position: relative;
@@ -42,7 +44,7 @@
             border-radius: 30px; background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
             opacity: 0; animation: sparkle 1.5s infinite;
         }
-        .start-btn:hover, .next-btn:hover, .shop-btn:hover, .back-btn:hover {
+        .start-btn:hover, .next-btn:hover, .shop-btn:hover, .back-btn:hover, .header-shop-btn:hover {
             transform: scale(1.05); background-color: #333;
         }
         .quiz-section, .results-section { display: none; animation: slideIn 0.8s ease-in; }
@@ -107,6 +109,9 @@
         <div class="logo">
             <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 60px;">
         </div>
+        <a href="https://softbabelagos.com" target="_blank">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
     </header>
 
     <div class="container">
@@ -179,7 +184,7 @@
             </div>
             <div id="question-5" class="quiz-question">
                 <h2>Your ideal night-out look?</h2>
-                <div class Lagos="options">
+                <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. A designer dress with gold accessories</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. A monochrome outfit with minimal jewelry</div>
                     <div class="option" onclick="selectOption(this, 'Statement Queen')">C. A bold power outfit with statement earrings</div>
