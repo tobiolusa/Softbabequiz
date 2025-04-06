@@ -35,7 +35,7 @@
             color: #555;
             animation: fadeIn 1.5s ease-in;
         }
-        .start-btn, .next-btn, .shop-btn {
+        .start-btn, .next-btn, .shop-btn, .back-btn {
             padding: 15px 40px;
             font-size: 1.1em;
             background-color: #000;
@@ -44,8 +44,9 @@
             border-radius: 25px;
             cursor: pointer;
             transition: transform 0.3s, background 0.3s;
+            margin: 10px;
         }
-        .start-btn:hover, .next-btn:hover, .shop-btn:hover {
+        .start-btn:hover, .next-btn:hover, .shop-btn:hover, .back-btn:hover {
             transform: scale(1.05);
             background-color: #333;
         }
@@ -89,6 +90,11 @@
         @keyframes slideIn {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
     </style>
 </head>
@@ -163,7 +169,10 @@
                     <div class="option" onclick="selectOption(this, 'Romantic')">G. A soft, feminine dress with delicate jewelry</div>
                 </div>
             </div>
-            <button class="next-btn" onclick="nextQuestion()">Next</button>
+            <div class="button-container">
+                <button class="back-btn" onclick="prevQuestion()">Back</button>
+                <button class="next-btn" onclick="nextQuestion()">Next</button>
+            </div>
         </div>
 
         <!-- Results Section -->
@@ -202,6 +211,14 @@
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
             } else {
                 showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+                currentQuestion--;
+                document.getElementById(`question-${currentQuestion}`).classList.add('active');
             }
         }
 
