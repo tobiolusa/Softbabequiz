@@ -5,36 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Softbabe Style Quiz</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
             background: #f5f5f5;
             color: #333;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 50px 20px;
             text-align: center;
+            flex: 1 0 auto;
         }
-        h1 {
-            font-size: 2.5em;
-            color: #000;
-            animation: fadeIn 1s ease-in;
-        }
-        h2 {
-            font-size: 1.5em;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            color: #555;
-            animation: fadeIn 1.5s ease-in;
-        }
+
+        h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
+        h2 { font-size: 1.5em; color: #333; margin-bottom: 20px; }
+        p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
         .start-btn, .next-btn, .shop-btn, .back-btn {
             padding: 15px 40px;
             font-size: 1.1em;
@@ -58,9 +55,7 @@
             display: none;
             margin: 20px 0;
         }
-        .quiz-question.active {
-            display: block;
-        }
+        .quiz-question.active { display: block; }
         .options {
             display: flex;
             flex-wrap: wrap;
@@ -75,39 +70,45 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .option:hover {
+        .option:hover { background: #000; color: #fff; }
+        .option.selected { background: #000; color: #fff; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .button-container { display: flex; justify-content: center; gap: 20px; }
+        footer {
             background: #000;
             color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.9em;
+            flex-shrink: 0;
+            width: 100%;
         }
-        .option.selected {
-            background: #000;
+        footer .socials a {
             color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        footer .socials a:hover { color: #ccc; }
+        footer .logo {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            margin: 10px auto;
         }
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
+        footer .tagline { font-style: italic; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Intro Section -->
         <div id="intro">
             <h1>Discover Your Softbabe Style</h1>
             <p>“Jewelry is more than an accessory—it’s an expression of who you are. Take our Softbabe Style Quiz to find the perfect pieces that match your unique vibe!”</p>
             <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
         </div>
 
-        <!-- Quiz Section -->
         <div id="quiz" class="quiz-section">
             <div id="question-1" class="quiz-question active">
                 <h2>Your go-to outfit vibe?</h2>
@@ -169,13 +170,36 @@
                     <div class="option" onclick="selectOption(this, 'Romantic')">G. A soft, feminine dress with delicate jewelry</div>
                 </div>
             </div>
+            <div id="question-6" class="quiz-question">
+                <h2>What’s your everyday mood?</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. Confident & put-together</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. Calm & graceful</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. Bold & creative</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. Trendy & energetic</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. In control & sharp</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">F. Dreamy & romantic</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">G. Chill & artsy</div>
+                </div>
+            </div>
+            <div id="question-7" class="quiz-question">
+                <h2>Which celeb’s vibe matches yours most?</h2>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe')">A. Zendaya</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist')">B. Sofia Richie Grainge</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen')">C. Rihanna</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter')">D. Hailey Bieber</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe')">E. Beyoncé</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian')">F. Florence Welch</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic')">G. Lana Del Rey</div>
+                </div>
+            </div>
             <div class="button-container">
                 <button class="back-btn" onclick="prevQuestion()">Back</button>
                 <button class="next-btn" onclick="nextQuestion()">Next</button>
             </div>
         </div>
 
-        <!-- Results Section -->
         <div id="results" class="results-section">
             <h1 id="result-title">You’re a [Softbabe Style]!</h1>
             <p id="result-desc"></p>
@@ -183,6 +207,16 @@
             <button class="shop-btn">Shop Your Style</button>
         </div>
     </div>
+
+    <footer>
+        <div class="logo"> <img src="softbabe.jpeg" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">“Soft. Stylish. Effortlessly You.”</div>
+    </footer>
 
     <script>
         let currentQuestion = 1;
@@ -207,7 +241,7 @@
             }
             document.getElementById(`question-${currentQuestion}`).classList.remove('active');
             currentQuestion++;
-            if (currentQuestion <= 5) {
+            if (currentQuestion <= 7) {  // Updated to 7 questions
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
             } else {
                 showResults();
@@ -226,15 +260,13 @@
             document.getElementById('quiz').style.display = 'none';
             document.getElementById('results').style.display = 'block';
 
-            // Tally the most frequent style
             const styleCounts = {};
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 7; i++) {  // Updated to count 7 questions
                 const style = answers[`q${i}`];
                 styleCounts[style] = (styleCounts[style] || 0) + 1;
             }
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b);
 
-            // Display results
             document.getElementById('result-title').innerText = `You’re a ${dominantStyle}!`;
             document.getElementById('result-desc').innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
             document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
