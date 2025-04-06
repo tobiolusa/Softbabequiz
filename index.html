@@ -32,6 +32,7 @@
         h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
         h2 { font-size: 1.5em; color: #333; margin-bottom: 20px; }
         p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
+
         .start-btn, .next-btn, .shop-btn, .back-btn {
             padding: 15px 40px;
             font-size: 1.1em;
@@ -42,26 +43,51 @@
             cursor: pointer;
             transition: transform 0.3s, background 0.3s;
             margin: 10px;
+            position: relative;
         }
+
+        /* Animated Start Quiz button */
+        .start-btn {
+            animation: pulse 2s infinite;
+        }
+
+        .start-btn::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 30px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0;
+            animation: sparkle 1.5s infinite;
+        }
+
         .start-btn:hover, .next-btn:hover, .shop-btn:hover, .back-btn:hover {
             transform: scale(1.05);
             background-color: #333;
         }
+
         .quiz-section, .results-section {
             display: none;
             animation: slideIn 0.8s ease-in;
         }
+
         .quiz-question {
             display: none;
             margin: 20px 0;
         }
+
         .quiz-question.active { display: block; }
+
         .options {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
         }
+
         .option {
             padding: 10px 20px;
             background: #fff;
@@ -69,12 +95,97 @@
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .option:hover { background: #000; color: #fff; }
+
+        /* Sparkle animation on hover for options */
+        .option:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .option::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .option:hover::after {
+            opacity: 1;
+            animation: glow 1s ease-in-out;
+        }
+
         .option.selected { background: #000; color: #fff; }
+
+        /* Progress bar styles */
+        .progress-container {
+            width: 50%;
+            margin: 20px auto;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #ffcccc; /* Pastel pink */
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .progress-dots {
+            position: absolute;
+            top: -5px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff9999; /* Slightly darker pastel pink */
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .progress-dot.active {
+            background: #ff6666; /* Active dot color */
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+
+        @keyframes glow {
+            0% { transform: translate(0, 0); opacity: 0; }
+            100% { transform: translate(50%, 50%); opacity: 0; }
+        }
+
         .button-container { display: flex; justify-content: center; gap: 20px; }
+        
         footer {
             background: #000;
             color: #fff;
@@ -84,20 +195,9 @@
             flex-shrink: 0;
             width: 100%;
         }
-        footer .socials a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
+        footer .socials a { color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s; }
         footer .socials a:hover { color: #ccc; }
-        footer .logo {
-            width: 50px;
-            height: 50px;
-            background: #fff;
-            border-radius: 50%;
-            margin: 10px auto;
-        }
+        footer .logo { width: 50px; height: 50px; background: #fff; border-radius: 50%; margin: 10px auto; }
         footer .tagline { font-style: italic; margin-top: 10px; }
     </style>
 </head>
@@ -110,6 +210,20 @@
         </div>
 
         <div id="quiz" class="quiz-section">
+            <!-- Progress bar added here -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-dots">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+            </div>
+
             <div id="question-1" class="quiz-question active">
                 <h2>Your go-to outfit vibe?</h2>
                 <div class="options">
@@ -225,6 +339,7 @@
         function startQuiz() {
             document.getElementById('intro').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
+            updateProgress();
         }
 
         function selectOption(element, style) {
@@ -241,8 +356,9 @@
             }
             document.getElementById(`question-${currentQuestion}`).classList.remove('active');
             currentQuestion++;
-            if (currentQuestion <= 7) {  // Updated to 7 questions
+            if (currentQuestion <= 7) {
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
+                updateProgress();
             } else {
                 showResults();
             }
@@ -253,7 +369,23 @@
                 document.getElementById(`question-${currentQuestion}`).classList.remove('active');
                 currentQuestion--;
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
+                updateProgress();
             }
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressDots = document.querySelectorAll('.progress-dot');
+            const progressPercentage = ((currentQuestion - 1) / 7) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+
+            progressDots.forEach((dot, index) => {
+                if (index < currentQuestion) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
         }
 
         function showResults() {
@@ -261,7 +393,7 @@
             document.getElementById('results').style.display = 'block';
 
             const styleCounts = {};
-            for (let i = 1; i <= 7; i++) {  // Updated to count 7 questions
+            for (let i = 1; i <= 7; i++) {
                 const style = answers[`q${i}`];
                 styleCounts[style] = (styleCounts[style] || 0) + 1;
             }
