@@ -119,52 +119,14 @@
         footer .logo { width: 50px; height: 50px; background: #fff; border-radius: 50%; margin: 10px auto; }
         footer .tagline { font-style: italic; margin-top: 10px; }
 
-        .background-gallery {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
-            z-index: -1;
-            opacity: 0.3;
-        }
-        .background-gallery img {
-            width: 100%;
-            height: 200%;
-            object-fit: cover;
-            animation: continuousSlideUp 10s linear infinite;
-        }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         @keyframes sparkle { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
         @keyframes glow { 0% { transform: translate(0, 0); opacity: 0; } 100% { transform: translate(50%, 50%); opacity: 0; } }
-        @keyframes continuousSlideUp {
-            0% { transform: translateY(50%); }
-            100% { transform: translateY(-50%); }
-        }
     </style>
 </head>
 <body>
-    <div class="background-gallery">
-        <img src="gallery/1.jpeg" alt="Gallery Image 1">
-        <img src="gallery/2.jpeg" alt="Gallery Image 2">
-        <img src="gallery/3.jpeg" alt="Gallery Image 3">
-        <img src="gallery/4.jpeg" alt="Gallery Image 4">
-        <img src="gallery/5.jpeg" alt="Gallery Image 5">
-        <img src="gallery/6.jpeg" alt="Gallery Image 6">
-        <img src="gallery/7.jpeg" alt="Gallery Image 7">
-        <img src="gallery/8.jpeg" alt="Gallery Image 8">
-        <img src="gallery/9.jpeg" alt="Gallery Image 9">
-    </div>
-
     <header>
         <div class="logo">
             <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 60px;">
