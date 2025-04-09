@@ -14,6 +14,8 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            position: relative;
+            z-index: 1;
         }
         header {
             background: #fff;
@@ -22,6 +24,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 2;
         }
         header .logo {
             width: 60px;
@@ -29,7 +33,15 @@
             background: #fff;
             border-radius: 50%;
         }
-        .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; text-align: center; flex: 1 0 auto; }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 50px 20px; 
+            text-align: center; 
+            flex: 1 0 auto; 
+            position: relative; 
+            z-index: 2;
+        }
         h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
         h2 { font-size: 1.5em; color: #333; margin-bottom: 20px; }
         p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
@@ -70,14 +82,8 @@
         .progress-dots { position: absolute; top: -5px; left: 0; right: 0; display: flex; justify-content: space-between; }
         .progress-dot { width: 8px; height: 8px; background: #ff9999; border-radius: 50%; transition: background 0.3s; }
         .progress-dot.active { background: #ff6666; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        @keyframes sparkle { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
-        @keyframes glow { 0% { transform: translate(0, 0); opacity: 0; } 100% { transform: translate(50%, 50%); opacity: 0; } }
         .button-container { display: flex; justify-content: center; gap: 20px; }
         
-        /* Social share buttons styling */
         .share-buttons {
             margin: 20px 0;
             display: flex;
@@ -97,14 +103,75 @@
         .share-btn.facebook { background: #3B5998; }
         .share-btn.instagram { background: #E1306C; }
 
-        footer { background: #000; color: #fff; padding: 20px 0; text-align: center; font-size: 0.9em; flex-shrink: 0; width: 100%; }
+        footer { 
+            background: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+            font-size: 0.9em; 
+            flex-shrink: 0; 
+            width: 100%; 
+            position: relative; 
+            z-index: 2;
+        }
         footer .socials a { color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s; }
         footer .socials a:hover { color: #ccc; }
         footer .logo { width: 50px; height: 50px; background: #fff; border-radius: 50%; margin: 10px auto; }
         footer .tagline { font-style: italic; margin-top: 10px; }
+
+        /* Updated Background Gallery Styling */
+        .background-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .background-gallery img {
+            width: 100%;
+            height: 200%; /* Increased height for continuous scrolling */
+            object-fit: cover;
+            animation: continuousSlideUp 10s linear infinite; /* Updated animation */
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes sparkle { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
+        @keyframes glow { 0% { transform: translate(0, 0); opacity: 0; } 100% { transform: translate(50%, 50%); opacity: 0; } }
+        /* New continuous animation */
+        @keyframes continuousSlideUp {
+            0% {
+                transform: translateY(50%);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="background-gallery">
+        <img src="gallery/1.jpeg" alt="Gallery Image 1">
+        <img src="gallery/2.jpeg" alt="Gallery Image 2">
+        <img src="gallery/3.jpeg" alt="Gallery Image 3">
+        <img src="gallery/4.jpeg" alt="Gallery Image 4">
+        <img src="gallery/5.jpeg" alt="Gallery Image 5">
+        <img src="gallery/6.jpeg" alt="Gallery Image 6">
+        <img src="gallery/7.jpeg" alt="Gallery Image 7">
+        <img src="gallery/8.jpeg" alt="Gallery Image 8">
+        <img src="gallery/9.jpeg" alt="Gallery Image 9">
+    </div>
+
     <header>
         <div class="logo">
             <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 60px;">
@@ -328,7 +395,7 @@
             const encodedUrl = encodeURIComponent(quizUrl);
 
             document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=SoftbabeStyle`;
-            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"e=${encodedText}`;
             document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
         }
     </script>
