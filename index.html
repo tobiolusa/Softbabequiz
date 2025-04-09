@@ -119,7 +119,6 @@
         footer .logo { width: 50px; height: 50px; background: #fff; border-radius: 50%; margin: 10px auto; }
         footer .tagline { font-style: italic; margin-top: 10px; }
 
-        /* Updated Background Gallery Styling */
         .background-gallery {
             position: fixed;
             top: 0;
@@ -137,25 +136,19 @@
         }
         .background-gallery img {
             width: 100%;
-            height: 200%; /* Increased height for continuous scrolling */
+            height: 200%;
             object-fit: cover;
-            animation: continuousSlideUp 10s linear infinite; /* Updated animation */
+            animation: continuousSlideUp 10s linear infinite;
         }
 
-        /* Animations */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         @keyframes sparkle { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
         @keyframes glow { 0% { transform: translate(0, 0); opacity: 0; } 100% { transform: translate(50%, 50%); opacity: 0; } }
-        /* New continuous animation */
         @keyframes continuousSlideUp {
-            0% {
-                transform: translateY(50%);
-            }
-            100% {
-                transform: translateY(-50%);
-            }
+            0% { transform: translateY(50%); }
+            100% { transform: translateY(-50%); }
         }
     </style>
 </head>
@@ -302,6 +295,7 @@
         <div id="results" class="results-section">
             <h1 id="result-title">Your Softbabe Style</h1>
             <p id="result-desc"></p>
+            <img id="result-image" src="" alt="Your Style Image" style="max-width: 300px; display: none; margin: 20px auto;">
             <p id="result-jewelry"></p>
             <button class="shop-btn">Shop Your Style</button>
             <div class="share-buttons">
@@ -388,6 +382,28 @@
             document.getElementById('result-title').innerText = `You’re a ${dominantStyle}!`;
             document.getElementById('result-desc').innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
             document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
+
+            const resultImage = document.getElementById('result-image');
+            const styleImages = {
+                'Statement Queen': 'result/statement.jpeg',
+                'Luxe': 'result/luxe.jpeg',
+                'Minimalist': 'result/minimalist.jpeg',
+                'Trendsetter': 'result/trendsetter.jpeg',
+                'Boss Babe': 'result/bossbabe.jpeg',
+                'Bohemian': 'result/bohemian.jpeg',
+                'Romantic': 'result/romantic.jpeg',
+                'Sporty': 'result/sporty.jpeg',
+                'Y2K': 'result/y2k.jpeg',
+                'Afrocentric': 'result/afrocentric.jpeg',
+                'Edgy': 'result/edgy.jpeg'
+            };
+
+            if (styleImages[dominantStyle]) {
+                resultImage.src = styleImages[dominantStyle];
+                resultImage.style.display = 'block';
+            } else {
+                resultImage.style.display = 'none';
+            }
 
             const shareText = `I’m a ${dominantStyle}! Discover your Softbabe Style at`;
             const quizUrl = window.location.href;
