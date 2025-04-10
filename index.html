@@ -59,7 +59,10 @@
         .start-btn:hover, .next-btn:hover, .shop-btn:hover, .back-btn:hover, .header-shop-btn:hover {
             transform: scale(1.05); background-color: #333;
         }
-        .quiz-section, .results-section { display: none; animation: slideIn 0.8s ease-in; }
+        .quiz-section, .results-section, .form-section { 
+            display: none; 
+            animation: slideIn 0.8s ease-in; 
+        }
         .quiz-question { display: none; margin: 20px 0; }
         .quiz-question.active { display: block; }
         .options { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
@@ -103,6 +106,42 @@
         .share-btn.facebook { background: #3B5998; }
         .share-btn.instagram { background: #E1306C; }
 
+        .form-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .form-container button:hover {
+            background: #333;
+        }
+        .error-message {
+            color: #ff6666;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
         footer { 
             background: #000; 
             color: #fff; 
@@ -140,7 +179,18 @@
         <div id="intro">
             <h1>Discover Your Softbabe Style</h1>
             <p>“Jewelry is more than an accessory—it’s an expression of who you are. Take our Softbabe Style Quiz to find the perfect pieces that match your unique vibe!”</p>
-            <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+            <button class="start-btn" onclick="showForm()">Start Quiz</button>
+        </div>
+
+        <div id="user-form" class="form-section">
+            <div class="form-container">
+                <h2>Let’s Get Started</h2>
+                <p>Please enter your name and email to take the quiz</p>
+                <input type="text" id="user-name" placeholder="Your Name" required>
+                <input type="email" id="user-email" placeholder="Your Email" required>
+                <button onclick="submitForm()">Continue to Quiz</button>
+                <p id="error-message" class="error-message">Please fill in both fields correctly</p>
+            </div>
         </div>
 
         <div id="quiz" class="quiz-section">
@@ -281,9 +331,34 @@
     <script>
         let currentQuestion = 1;
         let answers = {};
+        let userName = '';
+        let userEmail = '';
+
+        function showForm() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('user-form').style.display = 'block';
+        }
+
+        function submitForm() {
+            const nameInput = document.getElementById('user-name');
+            const emailInput = document.getElementById('user-email');
+            const errorMessage = document.getElementById('error-message');
+
+            userName = nameInput.value.trim();
+            userEmail = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (userName === '' || !emailRegex.test(userEmail)) {
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            document.getElementById('user-form').style.display = 'none';
+            startQuiz();
+        }
 
         function startQuiz() {
-            document.getElementById('intro').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
             updateProgress();
         }
@@ -341,7 +416,7 @@
             }
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b);
 
-            document.getElementById('result-title').innerText = `You’re a ${dominantStyle}!`;
+            document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
             document.getElementById('result-desc').innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
             document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
 
@@ -367,13 +442,13 @@
                 resultImage.style.display = 'none';
             }
 
-            const shareText = `I’m a ${dominantStyle}! Discover your Softbabe Style at`;
+            const shareText = `${userName} is a ${dominantStyle}! Discover your Softbabe Style at`;
             const quizUrl = window.location.href;
             const encodedText = encodeURIComponent(shareText);
             const encodedUrl = encodeURIComponent(quizUrl);
 
             document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=SoftbabeStyle`;
-            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"e=${encodedText}`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
             document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
         }
     </script>
