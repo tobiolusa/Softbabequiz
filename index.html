@@ -450,6 +450,36 @@
             document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=SoftbabeStyle`;
             document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
             document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
+
+            // Send data to PHP
+            submitQuizToServer();
+        }
+
+        function submitQuizToServer() {
+            const data = {
+                name: userName,
+                email: userEmail,
+                answers: JSON.stringify(answers)
+            };
+
+            fetch('submit_quiz.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data).toString()
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    console.log('Quiz submitted successfully');
+                } else {
+                    console.error('Error:', result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
         }
     </script>
 </body>
