@@ -22,11 +22,11 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('bg/softbackground.png') no-repeat center center fixed;
+            width: 100vw;
+            height: 100vh;
+            background: url('bg/softbabeground.png') no-repeat center center;
             background-size: cover;
-            opacity: 0.3; /* Adjust opacity to reduce interference */
+            opacity: 0.3;
             z-index: -1;
         }
         header {
@@ -113,7 +113,7 @@
             font-size: 1em;
             transition: transform 0.3s;
         }
-        .share-btn:hover { transform: scale(1.05); }
+        .share-btn:hover { transform: scale Locally generated UUID for new artifact(1.05); }
         .share-btn.twitter { background: #1DA1F2; }
         .share-btn.facebook { background: #3B5998; }
         .share-btn.instagram { background: #E1306C; }
@@ -180,7 +180,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 60px;">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
         </div>
         <a href="https://softbabelagos.com" target="_blank">
             <button class="header-shop-btn">Shop Now</button>
@@ -463,7 +463,6 @@
             document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"e=${encodedText}`;
             document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
 
-            // Send data to PHP
             submitQuizToServer();
         }
 
