@@ -42,7 +42,7 @@
             position: relative; 
             z-index: 2;
         }
-        h1 { font-size: 2.1em; color: #000; animation: fadeIn 1s ease-in; }
+        h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
         p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
         .shop-btn, .header-shop-btn {
             padding: 15px 40px; font-size: 1.1em; background-color: #000; color: #fff;
@@ -105,7 +105,9 @@
     <div class="container">
         <div id="results" class="results-section">
             <h1 id="result-title">Your Softbabe Style</h1>
-            <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height:600px; display: none; margin: 20px auto;">
+            <p></p>
+            <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
+            <p id="result-jewelry"></p>
             <button class="shop-btn">Shop Your Style</button>
             <div class="share-buttons">
                 <a href="#" id="share-twitter" class="share-btn twitter" target="_blank">Share on Twitter</a>
@@ -139,7 +141,10 @@
             }
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
 
-            document.getElementById('result-title').innerText = ` Hey, ${userName}`;
+            document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
+            const descParagraph = document.querySelector('#results p:not(#result-jewelry)');
+            descParagraph.innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
+            document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
 
             const resultImage = document.getElementById('result-image');
             const styleImages = {
