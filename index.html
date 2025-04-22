@@ -57,7 +57,7 @@
         h1 { font-size: 2.5em; color: #000; animation: fadeIn 1s ease-in; }
         h2 { font-size: 1.5em; color: #333; margin-bottom: 20px; }
         p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
-        .start-btn, .next-btn, .shop-btn, .back-btn, .header-shop-btn {
+        .start-btn, .next-btn, .back-btn, .header-shop-btn {
             padding: 15px 40px; font-size: 1.1em; background-color: #000; color: #fff;
             border: none; border-radius: 25px; cursor: pointer; transition: transform 0.3s, background 0.3s;
             margin: 10px; position: relative;
@@ -68,10 +68,10 @@
             border-radius: 30px; background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
             opacity: 0; animation: sparkle 1.5s infinite;
         }
-        .start-btn:hover, .next-btn:hover, .shop-btn:hover, .back-btn:hover, .header-shop-btn:hover {
+        .start-btn:hover, .next-btn:hover, .back-btn:hover, .header-shop-btn:hover {
             transform: scale(1.05); background-color: #333;
         }
-        .quiz-section, .results-section, .form-section { 
+        .quiz-section, .form-section { 
             display: none; 
             animation: slideIn 0.8s ease-in; 
         }
@@ -98,26 +98,6 @@
         .progress-dot { width: 8px; height: 8px; background: #ff9999; border-radius: 50%; transition: background 0.3s; }
         .progress-dot.active { background: #ff6666; }
         .button-container { display: flex; justify-content: center; gap: 20px; }
-        
-        .share-buttons {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-        .share-btn {
-            padding: 10px 20px;
-            border-radius: 20px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 1em;
-            transition: transform 0.3s;
-        }
-        .share-btn:hover { transform: scale Locally generated UUID for new artifact(1.05); }
-        .share-btn.twitter { background: #1DA1F2; }
-        .share-btn.facebook { background: #3B5998; }
-        .share-btn.instagram { background: #E1306C; }
-
         .form-container {
             background: #fff;
             padding: 30px;
@@ -153,7 +133,6 @@
             margin-top: 5px;
             display: none;
         }
-
         footer { 
             background: #000; 
             color: #fff; 
@@ -169,7 +148,6 @@
         footer .socials a:hover { color: #ccc; }
         footer .logo { width: 50px; height: 50px; background: #fff; border-radius: 50%; margin: 10px auto; }
         footer .tagline { font-style: italic; margin-top: 10px; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
@@ -315,19 +293,6 @@
                 <button class="next-btn" onclick="nextQuestion()">Next</button>
             </div>
         </div>
-
-        <div id="results" class="results-section">
-            <h1 id="result-title">Your Softbabe Style</h1>
-            <p id="result-desc"></p>
-            <img id="result-image" src="" alt="Your Style Image" style="max-width: 300px; display: none; margin: 20px auto;">
-            <p id="result-jewelry"></p>
-            <button class="shop-btn">Shop Your Style</button>
-            <div class="share-buttons">
-                <a href="#" id="share-twitter" class="share-btn twitter" target="_blank">Share on Twitter</a>
-                <a href="#" id="share-facebook" class="share-btn facebook" target="_blank">Share on Facebook</a>
-                <a href="#" id="share-instagram" class="share-btn instagram" target="_blank">Share on Instagram</a>
-            </div>
-        </div>
     </div>
 
     <footer>
@@ -367,6 +332,8 @@
 
             errorMessage.style.display = 'none';
             document.getElementById('user-form').style.display = 'none';
+            sessionStorage.setItem('userName', userName);
+            sessionStorage.setItem('userEmail', userEmail);
             startQuiz();
         }
 
@@ -393,7 +360,9 @@
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
                 updateProgress();
             } else {
-                showResults();
+                sessionStorage.setItem('quizAnswers', JSON.stringify(answers));
+                submitQuizToServer();
+                window.location.href = 'result.html';
             }
         }
 
@@ -415,55 +384,6 @@
                 if (index < currentQuestion) dot.classList.add('active');
                 else dot.classList.remove('active');
             });
-        }
-
-        function showResults() {
-            document.getElementById('quiz').style.display = 'none';
-            document.getElementById('results').style.display = 'block';
-
-            const styleCounts = {};
-            for (let i = 1; i <= 6; i++) {
-                const style = answers[`q${i}`];
-                styleCounts[style] = (styleCounts[style] || 0) + 1;
-            }
-            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b);
-
-            document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
-            document.getElementById('result-desc').innerText = `Your ${dominantStyle} vibe shines through in everything you do—elegant, bold, or effortlessly chic!`;
-            document.getElementById('result-jewelry').innerText = `Explore our curated ${dominantStyle} jewelry collection just for you.`;
-
-            const resultImage = document.getElementById('result-image');
-            const styleImages = {
-                'Statement Queen': 'result/statement.jpeg',
-                'Luxe': 'result/luxe.jpeg',
-                'Minimalist': 'result/minimalist.jpeg',
-                'Trendsetter': 'result/trendsetter.jpeg',
-                'Boss Babe': 'result/bossbabe.jpeg',
-                'Bohemian': 'result/bohemian.jpeg',
-                'Romantic': 'result/romantic.jpeg',
-                'Sporty': 'result/sporty.jpeg',
-                'Y2K': 'result/y2k.jpeg',
-                'Afrocentric': 'result/afrocentric.jpeg',
-                'Edgy': 'result/edgy.jpeg'
-            };
-
-            if (styleImages[dominantStyle]) {
-                resultImage.src = styleImages[dominantStyle];
-                resultImage.style.display = 'block';
-            } else {
-                resultImage.style.display = 'none';
-            }
-
-            const shareText = `${userName} is a ${dominantStyle}! Discover your Softbabe Style at`;
-            const quizUrl = window.location.href;
-            const encodedText = encodeURIComponent(shareText);
-            const encodedUrl = encodeURIComponent(quizUrl);
-
-            document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=SoftbabeStyle`;
-            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"e=${encodedText}`;
-            document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
-
-            submitQuizToServer();
         }
 
         function submitQuizToServer() {

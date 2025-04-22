@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Softbabe Style Result</title>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        header {
+            background: #fff;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        header .logo {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 50px 20px; 
+            text-align: center; 
+            flex: 1 0 auto; 
+            position: relative; 
+            z-index: 2;
+        }
+        h1 { font-size: 2.1em; color: #000; animation: fadeIn 1s ease-in; }
+        p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s ease-in; }
+        .shop-btn, .header-shop-btn {
+            padding: 15px 40px; font-size: 1.1em; background-color: #000; color: #fff;
+            border: none; border-radius: 25px; cursor: pointer; transition: transform 0.3s, background 0.3s;
+            margin: 10px; position: relative;
+        }
+        .shop-btn:hover, .header-shop-btn:hover {
+            transform: scale(1.05); background-color: #333;
+        }
+        .results-section { 
+            animation: slideIn 0.8s ease-in; 
+        }
+        .share-buttons {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+            transition: transform 0.3s;
+        }
+        .share-btn:hover { transform: scale(1.05); }
+        .share-btn.twitter { background: #1DA1F2; }
+        .share-btn.facebook { background: #3B5998; }
+        .share-btn.instagram { background: #E1306C; }
+        footer { 
+            background: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+            font-size: 0.9em; 
+            flex-shrink: 0; 
+            width: 100%; 
+            position: relative; 
+            z-index: 2;
+        }
+        footer .socials a { color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s; }
+        footer .socials a:hover { color: #ccc; }
+        footer .logo { width: 50px; height: 50px; background: #fff; border-radius: 50%; margin: 10px auto; }
+        footer .tagline { font-style: italic; margin-top: 10px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com" target="_blank">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="results" class="results-section">
+            <h1 id="result-title">Your Softbabe Style</h1>
+            <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height:600px; display: none; margin: 20px auto;">
+            <button class="shop-btn">Shop Your Style</button>
+            <div class="share-buttons">
+                <a href="#" id="share-twitter" class="share-btn twitter" target="_blank">Share on Twitter</a>
+                <a href="#" id="share-facebook" class="share-btn facebook" target="_blank">Share on Facebook</a>
+                <a href="#" id="share-instagram" class="share-btn instagram" target="_blank">Share on Instagram</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script>
+        function showResults() {
+            const userName = sessionStorage.getItem('userName') || 'User';
+            const answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+
+            const styleCounts = {};
+            for (let i = 1; i <= 6; i++) {
+                const style = answers[`q${i}`];
+                if (style) {
+                    styleCounts[style] = (styleCounts[style] || 0) + 1;
+                }
+            }
+            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
+
+            document.getElementById('result-title').innerText = ` Hey, ${userName}`;
+
+            const resultImage = document.getElementById('result-image');
+            const styleImages = {
+                'Statement Queen': 'result/statement.jpeg',
+                'Luxe': 'result/luxe.jpeg',
+                'Minimalist': 'result/minimalist.jpeg',
+                'Trendsetter': 'result/trendsetter.jpeg',
+                'Boss Babe': 'result/bossbabe.jpeg',
+                'Bohemian': 'result/bohemian.jpeg',
+                'Romantic': 'result/romantic.jpeg',
+                'Sporty': 'result/sporty.jpeg',
+                'Y2K': 'result/y2k.jpeg',
+                'Afrocentric': 'result/afrocentric.jpeg',
+                'Edgy': 'result/edgy.jpeg'
+            };
+
+            if (styleImages[dominantStyle]) {
+                resultImage.src = styleImages[dominantStyle];
+                resultImage.style.display = 'block';
+            } else {
+                resultImage.style.display = 'none';
+            }
+
+            const shareText = `${userName} is a ${dominantStyle}! Discover your Softbabe Style at`;
+            const quizUrl = 'https://softbabelagos.com'; // Replace with actual URL
+            const encodedText = encodeURIComponent(shareText);
+            const encodedUrl = encodeURIComponent(quizUrl);
+
+            document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=SoftbabeStyle`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"e=${encodedText}`;
+            document.getElementById('share-instagram').href = `https://www.instagram.com/?url=${encodedUrl}`;
+        }
+
+        // Run showResults when the page loads
+        window.onload = showResults;
+    </script>
+</body>
+</html>
