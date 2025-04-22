@@ -134,6 +134,11 @@
             margin-top: 5px;
             display: none;
         }
+        .multi-select-note {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
         footer { 
             background: #000; 
             color: #fff; 
@@ -199,6 +204,7 @@
 
             <div id="question-1" class="quiz-question active">
                 <h2>Your go-to outfit vibe?</h2>
+                <p class="multi-select-note">Select all that apply</p>
                 <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. Chic and expensive-looking</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. Clean and simple</div>
@@ -215,6 +221,7 @@
             </div>
             <div id="question-2" class="quiz-question">
                 <h2>Favorite jewelry piece?</h2>
+                <p class="multi-select-note">Select all that apply</p>
                 <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. Gold statement necklace</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. Dainty gold bracelet</div>
@@ -231,6 +238,7 @@
             </div>
             <div id="question-3" class="quiz-question">
                 <h2>What color jewelry do you love most?</h2>
+                <p class="multi-select-note">Select all that apply</p>
                 <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. Gold — bold, timeless, and fits any vibe from luxe to minimalist</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. Silver — sleek, cool, and perfect for boss babes, trendsetters, or minimalists</div>
@@ -247,6 +255,7 @@
             </div>
             <div id="question-4" class="quiz-question">
                 <h2>Pick your dream vacation spot</h2>
+                <p class="multi-select-note">Select all that apply</p>
                 <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. Paris, for luxury shopping</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. A peaceful beach retreat</div>
@@ -263,6 +272,7 @@
             </div>
             <div id="question-5" class="quiz-question">
                 <h2>Your ideal night-out look?</h2>
+                <p class="multi-select-note">Select all that apply</p>
                 <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. A designer dress with gold accessories</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. A monochrome outfit with minimal jewelry</div>
@@ -279,6 +289,7 @@
             </div>
             <div id="question-6" class="quiz-question">
                 <h2>What’s your everyday mood?</h2>
+                <p class="multi-select-note">Select all that apply</p>
                 <div class="options">
                     <div class="option" onclick="selectOption(this, 'Luxe')">A. Confident & put-together</div>
                     <div class="option" onclick="selectOption(this, 'Minimalist')">B. Calm & graceful</div>
@@ -308,7 +319,14 @@
 
     <script>
         let currentQuestion = 1;
-        let answers = {};
+        let answers = {
+            q1: [],
+            q2: [],
+            q3: [],
+            q4: [],
+            q5: [],
+            q6: []
+        };
         let userName = '';
         let userEmail = '';
 
@@ -341,18 +359,41 @@
         function startQuiz() {
             document.getElementById('quiz').style.display = 'block';
             updateProgress();
+            restoreSelections();
         }
 
         function selectOption(element, style) {
-            const siblings = element.parentElement.querySelectorAll('.option');
-            siblings.forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            answers[`q${currentQuestion}`] = style;
+            const questionKey = `q${currentQuestion}`;
+            const isSelected = element.classList.contains('selected');
+
+            if (isSelected) {
+                // Deselect the option
+                element.classList.remove('selected');
+                answers[questionKey] = answers[questionKey].filter(s => s !== style);
+            } else {
+                // Select the option
+                element.classList.add('selected');
+                answers[questionKey].push(style);
+            }
+        }
+
+        function restoreSelections() {
+            const questionKey = `q${currentQuestion}`;
+            const options = document.getElementById(`question-${currentQuestion}`).querySelectorAll('.option');
+            options.forEach(option => {
+                const style = option.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (answers[questionKey].includes(style)) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
         }
 
         function nextQuestion() {
-            if (!answers[`q${currentQuestion}`]) {
-                alert('Please select an option before moving on!');
+            const questionKey = `q${currentQuestion}`;
+            if (answers[questionKey].length === 0) {
+                alert('Please select at least one option before moving on!');
                 return;
             }
             document.getElementById(`question-${currentQuestion}`).classList.remove('active');
@@ -360,6 +401,7 @@
             if (currentQuestion <= 6) {
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
                 updateProgress();
+                restoreSelections();
             } else {
                 sessionStorage.setItem('quizAnswers', JSON.stringify(answers));
                 submitQuizToServer();
@@ -373,6 +415,7 @@
                 currentQuestion--;
                 document.getElementById(`question-${currentQuestion}`).classList.add('active');
                 updateProgress();
+                restoreSelections();
             }
         }
 
