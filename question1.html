@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz - Question 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body::before {
+        margin: 0;
+        padding: 0;
+        background-image: url('gallery/1.jpeg') !important; /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%;
+        opacity: 0.4;
+      }
+
+</style>
+<body onload="initializePage(1, 6)">
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="quiz" class="quiz-section">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-dots">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h2>Your go-to outfit vibe?</h2>
+                <p class="multi-select-note">Select all that apply</p>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe', 1)">A. Chic and expensive-looking</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist', 1)">B. Clean and simple</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen', 1)">C. Bold and unique</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter', 1)">D. Always trendy</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 1)">E. Structured and boss-like</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian', 1)">F. Flowy and artistic</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic', 1)">G. Soft and romantic</div>
+                    <div class="option" onclick="selectOption(this, 'Sporty', 1)">H. Comfy and cool — sneakers over heels</div>
+                    <div class="option" onclick="selectOption(this, 'Y2K', 1)">I. Fun, flirty, and throwback—think old Nollywood crop tops, low-rise jeans, and chunky belts</div>
+                    <div class="option" onclick="selectOption(this, 'Afrocentric', 1)">J. Nigerian-inspired—vibrant prints, bold colors, and head-turning elegance</div>
+                    <div class="option" onclick="selectOption(this, 'Edgy', 1)">K. Alternative and expressive—clashing textures, vintage layers, and IDGAF energy</div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="back-btn" onclick="prevQuestion(1)">Back</button>
+                <button class="next-btn" onclick="nextQuestion(1, 6)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function initializePage(currentQuestion, totalQuestions) {
+            updateProgress(currentQuestion, totalQuestions);
+            restoreSelections(currentQuestion);
+        }
+    </script>
+</body>
+</html>

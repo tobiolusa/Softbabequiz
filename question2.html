@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz - Question 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body::before {
+        margin: 0;
+        padding: 0;
+        background-image: url('gallery/4.jpeg') !important; /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%;
+        opacity: 0.3;
+      }
+
+</style>
+<body onload="initializePage(2, 6)">
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="quiz" class="quiz-section">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-dots">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h2>Favorite jewelry piece?</h2>
+                <p class="multi-select-note">Select all that apply</p>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe', 2)">A. Gold statement necklace</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist', 2)">B. Dainty gold bracelet</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen', 2)">C. Large gemstone ring</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter', 2)">D. Layered mixed-metal necklaces</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 2)">E. Sleek and elegant watch</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian', 2)">F. Beaded or nature-inspired jewelry</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic', 2)">G. Heart-shaped pendant</div>
+                    <div class="option" onclick="selectOption(this, 'Sporty', 2)">H. Chunky chain necklace or sporty studs</div>
+                    <div class="option" onclick="selectOption(this, 'Y2K', 2)">I. Chunky hoop earrings or sparkly butterfly pendants</div>
+                    <div class="option" onclick="selectOption(this, 'Afrocentric', 2)">J. Cowrie shell earrings or bold, beaded sets</div>
+                    <div class="option" onclick="selectOption(this, 'Edgy', 2)">K. Nose ring, vintage chains, or mismatched pieces</div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="back-btn" onclick="prevQuestion(2)">Back</button>
+                <button class="next-btn" onclick="nextQuestion(2, 6)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function initializePage(currentQuestion, totalQuestions) {
+            updateProgress(currentQuestion, totalQuestions);
+            restoreSelections(currentQuestion);
+        }
+    </script>
+</body>
+</html>

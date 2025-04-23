@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz - Get Started</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="user-form" class="form-section">
+            <div class="form-container">
+                <h2>Let’s Get Started</h2>
+                <p>Please enter your name and email to take the quiz</p>
+                <input type="text" id="user-name" placeholder="Your Name" required>
+                <input type="email" id="user-email" placeholder="Your Email" required>
+                <button onclick="submitForm()">Continue to Quiz</button>
+                <p id="error-message" class="error-message">Please fill in both fields correctly</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script>
+        function submitForm() {
+            const nameInput = document.getElementById('user-name');
+            const emailInput = document.getElementById('user-email');
+            const errorMessage = document.getElementById('error-message');
+
+            const userName = nameInput.value.trim();
+            const userEmail = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (userName === '' || !emailRegex.test(userEmail)) {
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            sessionStorage.setItem('userName', userName);
+            sessionStorage.setItem('userEmail', userEmail);
+            sessionStorage.setItem('quizAnswers', JSON.stringify({
+                q1: [],
+                q2: [],
+                q3: [],
+                q4: [],
+                q5: [],
+                q6: []
+            }));
+            window.location.href = 'question1.html';
+        }
+    </script>
+</body>
+</html>

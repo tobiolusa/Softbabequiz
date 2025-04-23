@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz - Question 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body::before {
+        margin: 0;
+        padding: 0;
+        background-image: url('gallery/5.jpeg') !important; /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%;
+        opacity: 0.3;
+      }
+
+</style>
+<body onload="initializePage(3, 6)">
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="quiz" class="quiz-section">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-dots">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h2>What color jewelry do you love most?</h2>
+                <p class="multi-select-note">Select all that apply</p>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe', 3)">A. Gold — bold, timeless, and fits any vibe from luxe to minimalist</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist', 3)">B. Silver — sleek, cool, and perfect for boss babes, trendsetters, or minimalists</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen', 3)">C. Bold, vibrant colors</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter', 3)">D. Mixed metals or trending shades</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 3)">E. Neutral tones like taupe, black, or white</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian', 3)">F. Earthy tones and natural gemstones</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic', 3)">G. Soft pastels or rose gold</div>
+                    <div class="option" onclick="selectOption(this, 'Sporty', 3)">H. Sporty neons or clean white</div>
+                    <div class="option" onclick="selectOption(this, 'Y2K', 3)">I. Bright candy colors or glitzy Y2K glam</div>
+                    <div class="option" onclick="selectOption(this, 'Afrocentric', 3)">J. Burnt orange, deep greens, gold, or Ankara patterns</div>
+                    <div class="option" onclick="selectOption(this, 'Edgy', 3)">K. Dark tones like black, or deep red</div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="back-btn" onclick="prevQuestion(3)">Back</button>
+                <button class="next-btn" onclick="nextQuestion(3, 6)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function initializePage(currentQuestion, totalQuestions) {
+            updateProgress(currentQuestion, totalQuestions);
+            restoreSelections(currentQuestion);
+        }
+    </script>
+</body>
+</html>

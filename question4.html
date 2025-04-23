@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz - Question 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body::before {
+        margin: 0;
+        padding: 0;
+        background-image: url('gallery/6.jpeg') !important; /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%;
+        opacity: 0.3;
+      }
+
+</style>
+<body onload="initializePage(4, 6)">
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com">
+            <button class="header-shop-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="quiz" class="quiz-section">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-dots">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h2>Pick your dream vacation spot</h2>
+                <p class="multi-select-note">Select all that apply</p>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, 'Luxe', 4)">A. Paris, for luxury shopping</div>
+                    <div class="option" onclick="selectOption(this, 'Minimalist', 4)">B. A peaceful beach retreat</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Queen', 4)">C. A fashion-forward city like NYC</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter', 4)">D. Tokyo, to explore cool fashion trends</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 4)">E. London — where power suits meet afternoon tea</div>
+                    <div class="option" onclick="selectOption(this, 'Bohemian', 4)">F. Bali, for a spiritual getaway</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic', 4)">G. A romantic getaway in Santorini</div>
+                    <div class="option" onclick="selectOption(this, 'Sporty', 4)">H. LA, for laid-back vibes and gym runs</div>
+                    <div class="option" onclick="selectOption(this, 'Y2K', 4)">I. A city escape where you can rock Y2K fits like you’re in an early Nollywood movie</div>
+                    <div class="option" onclick="selectOption(this, 'Afrocentric', 4)">J. Lagos or Accra — for Afrobeat parties, Ankara slay, and cultural richness</div>
+                    <div class="option" onclick="selectOption(this, 'Edgy', 4)">K. Berlin or Lagos Island — for underground shows, street style, and alté culture</div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="back-btn" onclick="prevQuestion(4)">Back</button>
+                <button class="next-btn" onclick="nextQuestion(4, 6)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function initializePage(currentQuestion, totalQuestions) {
+            updateProgress(currentQuestion, totalQuestions);
+            restoreSelections(currentQuestion);
+        }
+    </script>
+</body>
+</html>
