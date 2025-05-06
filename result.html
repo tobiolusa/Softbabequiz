@@ -109,7 +109,9 @@
             <p></p>
             <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
             <p id="result-jewelry"></p>
-            <button class="shop-btn">Shop Your Style</button>
+            <button class="shop-btn" onclick="window.location.href='https://softbabelagos.com'">
+                Shop Your Style
+              </button>
             <div class="share-buttons">
                 <a href="#" id="share-twitter" class="share-btn twitter" target="_blank">Share on Twitter</a>
                 <a href="#" id="share-facebook" class="share-btn facebook" target="_blank">Share on Facebook</a>
@@ -135,9 +137,11 @@
 
             const styleCounts = {};
             for (let i = 1; i <= 6; i++) {
-                const style = answers[`q${i}`];
-                if (style) {
-                    styleCounts[style] = (styleCounts[style] || 0) + 1;
+                const styles = answers[`q${i}`];
+                if (Array.isArray(styles)) {
+                    styles.forEach(style => {
+                        styleCounts[style] = (styleCounts[style] || 0) + 1;
+                    });
                 }
             }
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
