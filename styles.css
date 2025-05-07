@@ -109,13 +109,14 @@ p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s e
 }
 .form-container button {
     width: 100%;
-    padding: 12px;
+    padding: 19px;
     background: #000;
     color: #fff;
     border: none;
     border-radius: 25px;
     cursor: pointer;
     transition: background 0.3s;
+    font-size: 1em;
 }
 .form-container button:hover {
     background: #333;
