@@ -19,17 +19,17 @@
 
   <div class="container">
     <div id="user-form" class="form-section">
-      <form action="https://formspree.io/f/xeoggvnd" method="POST" onsubmit="return handleFormSubmit(event)">
-        <div class="form-container">
-          <h2>Let’s Get Started</h2>
-          <p>Please enter your name and email to take the quiz</p>
-          <input type="text" id="user-name" name="name" placeholder="Your Name" required>
-          <input type="email" id="user-email" name="email" placeholder="Your Email" required>
-          <input type="hidden" name="answers" id="hidden-answers">
-          <button type="submit">Continue to Quiz</button>
-          <p id="error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
-        </div>
-      </form>
+        <form id="user-form">
+            <div class="form-container">
+              <h2>Let’s Get Started</h2>
+              <p>Please enter your name and email to take the quiz</p>
+              <input type="text" id="user-name" name="name" placeholder="Your Name" required>
+              <input type="email" id="user-email" name="email" placeholder="Your Email" required>
+              <button type="button" onclick="storeUserData()">Continue to Quiz</button>
+              <p id="error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
+            </div>
+          </form>
+          
     </div>
   </div>
 
@@ -44,45 +44,36 @@
   </footer>
 
   <script>
-    function handleFormSubmit(event) {
-      event.preventDefault();
-      const nameInput = document.getElementById('user-name');
-      const emailInput = document.getElementById('user-email');
-      const errorMessage = document.getElementById('error-message');
-      const hiddenAnswers = document.getElementById('hidden-answers');
-
-      const userName = nameInput.value.trim();
-      const userEmail = emailInput.value.trim();
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-      if (userName === '' || !emailRegex.test(userEmail)) {
-        errorMessage.style.display = 'block';
-        return false;
+    function storeUserData() {
+        const nameInput = document.getElementById('user-name').value.trim();
+        const emailInput = document.getElementById('user-email').value.trim();
+        const errorMessage = document.getElementById('error-message');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+        if (!nameInput || !emailRegex.test(emailInput)) {
+          errorMessage.style.display = 'block';
+          return;
+        }
+      
+        errorMessage.style.display = 'none';
+      
+        // Store user data
+        sessionStorage.setItem('userName', nameInput);
+        sessionStorage.setItem('userEmail', emailInput);
+        sessionStorage.setItem('quizAnswers', JSON.stringify({
+          q1: [],
+          q2: [],
+          q3: [],
+          q4: [],
+          q5: [],
+          q6: []
+        }));
+      
+        // Redirect to quiz
+        window.location.href = 'question1.html';
       }
-
-      errorMessage.style.display = 'none';
-
-      // Store in sessionStorage for the quiz
-      sessionStorage.setItem('userName', userName);
-      sessionStorage.setItem('userEmail', userEmail);
-
-      const blankAnswers = {
-        q1: [],
-        q2: [],
-        q3: [],
-        q4: [],
-        q5: [],
-        q6: []
-      };
-
-      sessionStorage.setItem('quizAnswers', JSON.stringify(blankAnswers));
-      hiddenAnswers.value = JSON.stringify(blankAnswers);
-
-      // Redirect to quiz after storing values
-      window.location.href = 'question1.html';
-      return false; // Prevent Formspree from submitting at this point
-    }
+      
+      
   </script>
 </body>
 </html>
