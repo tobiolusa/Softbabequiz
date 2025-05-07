@@ -91,29 +91,35 @@
             const userEmail = sessionStorage.getItem('userEmail');
             const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers'));
             const resultTitle = document.getElementById('result-title').innerText;
-
+        
             if (!userName || !userEmail || !resultTitle) return;
-
+        
             const formData = new FormData();
             formData.append('name', userName);
             formData.append('email', userEmail);
             formData.append('finalResult', resultTitle);
             formData.append('answers', JSON.stringify(quizAnswers));
-
+        
             fetch('https://formspree.io/f/xeoggvnd', {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Form submitted:', data);
-                alert('Your result has been submitted successfully.');
+                if (data.ok) {
+                    console.log('Form submitted successfully:', data);
+                    alert('Your result has been successfully submitted.');
+                } else {
+                    console.warn('Submission response received but not successful:', data);
+                    alert('There was a problem submitting your result. Please try again.');
+                }
             })
             .catch(error => {
                 console.error('Error submitting form:', error);
-                alert('There was an error submitting your result. Please try again.');
+                alert('There was an error submitting your result. Please check your network and try again.');
             });
         }
+        
 
         function showResults() {
             const userName = sessionStorage.getItem('userName') || 'User';
