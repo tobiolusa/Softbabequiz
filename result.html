@@ -39,13 +39,13 @@
         }
         h1 { font-size: 2.5em; color: #000; }
         p { font-size: 1.2em; margin-bottom: 30px; color: #555; }
-        .shop-btn, .retake-btn {
+        .shop-btn, .retake-btn, .form-btn, .share-btn {
             padding: 15px 40px; font-size: 1.1em; background-color: #000; color: #fff;
             border: none; border-radius: 25px; cursor: pointer; margin: 10px;
         }
         .retake-btn { background-color: #ff6b6b; }
         .retake-btn:hover { background-color: #ff4d4d; }
-        .shop-btn:hover { background-color: #333; }
+        .shop-btn:hover, .form-btn:hover, .share-btn:hover { background-color: #333; }
         .results-section { animation: slideIn 0.8s ease-in; }
         footer { 
             background: #000; 
@@ -54,6 +54,63 @@
             text-align: center; 
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        .form-section {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-container h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .form-container p {
+            font-size: 1em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .form-container input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .form-container button {
+            width: 100%;
+            max-width: 400px;
+        }
+        .error-message {
+            color: #ff4d4d;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .share-section {
+            margin: 20px 0;
+        }
+        .share-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #555;
+            margin: 5px;
+        }
+        .share-btn.facebook { background-color: #3b5998; }
+        .share-btn.twitter { background-color: #1da1f2; }
+        .share-btn.instagram { background-color: #e4405f; }
+        .share-btn.facebook:hover { background-color: #2f4377; }
+        .share-btn.twitter:hover { background-color: #1886c9; }
+        .share-btn.instagram:hover { background-color: #c13584; }
     </style>
 </head>
 <body>
@@ -73,11 +130,33 @@
             <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
             <p id="result-jewelry"></p>
 
+          
+
             <!-- Shop Your Style Button -->
             <button class="shop-btn" onclick="window.location.href='https://softbabelagos.com'">Shop Your Style</button>
 
             <!-- Retake Quiz Button -->
             <button class="retake-btn" onclick="retakeQuiz()">Retake Quiz</button>
+              <!-- Share Buttons -->
+              <div class="share-section">
+                <button class="share-btn facebook" onclick="shareOnFacebook()">Share on Facebook</button>
+                <button class="share-btn twitter" onclick="shareOnTwitter()">Share on Twitter</button>
+                <button class="share-btn instagram" onclick="shareOnInstagram()">Share on Instagram</button>
+            </div>
+            <br> <br> 
+            <!-- User Form -->
+            <div id="user-form" class="form-section">
+                <form id="user-form">
+                    <div class="form-container">
+                        <h2>Want your personalized Softbabe moodboard and discount code to use anytime? Drop your email!</h2>
+                        <p>Optional: Share your details to get exclusive perks.</p>
+                        <input type="text" id="user-name" name="name" placeholder="Your Name">
+                        <input type="email" id="user-email" name="email" placeholder="Your Email">
+                        <button type="button" class="form-btn" onclick="storeUserData()">Submit</button>
+                        <p id="error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -86,44 +165,77 @@
     </footer>
 
     <script>
-        function submitResult() {
-            const userName = sessionStorage.getItem('userName');
-            const userEmail = sessionStorage.getItem('userEmail');
-            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers'));
+        function storeUserData() {
+            const nameInput = document.getElementById('user-name').value.trim();
+            const emailInput = document.getElementById('user-email').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (nameInput || emailInput) {
+                if (!nameInput || !emailRegex.test(emailInput)) {
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+                errorMessage.style.display = 'none';
+                sessionStorage.setItem('userName', nameInput);
+                sessionStorage.setItem('userEmail', emailInput);
+                submitResult(true);
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        }
+
+        function submitResult(includeUserDetails = false) {
+            const userName = sessionStorage.getItem('userName') || '';
+            const userEmail = sessionStorage.getItem('userEmail') || '';
+            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const resultTitle = document.getElementById('result-title').innerText;
-        
-            if (!userName || !userEmail || !resultTitle) return;
-        
+
+            if (!resultTitle || !Object.keys(quizAnswers).length) {
+                console.error('Missing quiz data for submission');
+                return;
+            }
+
             const formData = new FormData();
-            formData.append('name', userName);
-            formData.append('email', userEmail);
+            if (includeUserDetails && userName && userEmail) {
+                formData.append('name', userName);
+                formData.append('email', userEmail);
+            }
             formData.append('finalResult', resultTitle);
             formData.append('answers', JSON.stringify(quizAnswers));
-        
+
             fetch('https://formspree.io/f/xeoggvnd', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
                     console.log('Form submitted successfully:', data);
-                    alert('Your result has been successfully submitted.');
+                    if (includeUserDetails) {
+                        alert('Your details have been successfully submitted. Check your email for your moodboard and discount code!');
+                    }
                 } else {
                     console.warn('Submission response received but not successful:', data);
-                    alert('There was a problem submitting your result. Please try again.');
+                    if (includeUserDetails) {
+                        alert('There was a problem submitting your details. Please try again.');
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error submitting form:', error);
-                alert('There was an error submitting your result. Please check your network and try again.');
+                if (includeUserDetails) {
+                    alert('There was an error submitting your details. Please check your network and try again.');
+                }
             });
         }
-        
 
         function showResults() {
-            const userName = sessionStorage.getItem('userName') || 'User';
             const answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+            const userName = sessionStorage.getItem('userName') || 'User';
 
             const styleCounts = {};
             for (let i = 1; i <= 6; i++) {
@@ -137,7 +249,7 @@
 
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
 
-            document.getElementById('result-title').innerText = `${userName}, You’re  ${dominantStyle}!`;
+            document.getElementById('result-title').innerText = `${userName}, You’re ${dominantStyle}!`;
 
             const resultImage = document.getElementById('result-image');
             const styleImages = {
@@ -161,15 +273,36 @@
                 resultImage.style.display = 'none';
             }
 
-            // Submit the result data to Formspree
-            submitResult();
+            submitResult(false);
+        }
+
+        function shareOnFacebook() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
+            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at Softbabe Lagos!`);
+            const url = encodeURIComponent('https://softbabelagos.com');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
+            const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
+            const url = encodeURIComponent('https://softbabelagos.com');
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
+
+        function shareOnInstagram() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
+            alert(`To share your result on Instagram:\n1. Take a screenshot of this page.\n2. Post it to your Instagram feed or story with the caption:\n"I'm a ${style}! Discover your Softbabe Style at softbabelagos.com! #SoftbabeLagos"\n3. Tag @softbabelagos for a chance to be featured!`);
         }
 
         function retakeQuiz() {
             sessionStorage.removeItem('quizAnswers');
             sessionStorage.removeItem('userName');
             sessionStorage.removeItem('userEmail');
-            window.location.href = 'form.html';
+            window.location.href = 'question1.html';
         }
 
         window.onload = showResults;
