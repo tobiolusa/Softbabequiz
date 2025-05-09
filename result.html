@@ -111,6 +111,52 @@
         .share-btn.facebook:hover { background-color: #2f4377; }
         .share-btn.twitter:hover { background-color: #1886c9; }
         .share-btn.instagram:hover { background-color: #c13584; }
+        /* Pop-up Styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: #fff;
+            max-width: 500px;
+            width: 90%;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+        }
+        .popup-content .form-container h2 {
+            font-size: 1.8em;
+            margin: 0 0 10px 0;
+            color: #000;
+        }
+        .popup-content .form-container p {
+            font-size: 1em;
+            margin: 0 0 20px 0;
+            color: #555;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -130,20 +176,20 @@
             <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
             <p id="result-jewelry"></p>
 
-          
-
             <!-- Shop Your Style Button -->
             <button class="shop-btn" onclick="window.location.href='https://softbabelagos.com'">Shop Your Style</button>
 
             <!-- Retake Quiz Button -->
             <button class="retake-btn" onclick="retakeQuiz()">Retake Quiz</button>
-              <!-- Share Buttons -->
-              <div class="share-section">
+
+            <!-- Share Buttons -->
+            <div class="share-section">
                 <button class="share-btn facebook" onclick="shareOnFacebook()">Share on Facebook</button>
                 <button class="share-btn twitter" onclick="shareOnTwitter()">Share on Twitter</button>
                 <button class="share-btn instagram" onclick="shareOnInstagram()">Share on Instagram</button>
             </div>
-            <br> <br> 
+            <br><br>
+
             <!-- User Form -->
             <div id="user-form" class="form-section">
                 <form id="user-form">
@@ -160,15 +206,32 @@
         </div>
     </div>
 
+    <!-- Pop-up Form -->
+    <div id="popup-overlay" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">×</span>
+            <form id="popup-user-form">
+                <div class="form-container">
+                    <h2>Want your personalized Softbabe moodboard and discount code to use anytime? Drop your email!</h2>
+                    <p>Optional: Share your details to get exclusive perks.</p>
+                    <input type="text" id="popup-user-name" name="name" placeholder="Your Name">
+                    <input type="email" id="popup-user-email" name="email" placeholder="Your Email">
+                    <button type="button" class="form-btn" onclick="storeUserData('popup')">Submit</button>
+                    <p id="popup-error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <div>Being soft is a lifestyle.</div>
     </footer>
 
     <script>
-        function storeUserData() {
-            const nameInput = document.getElementById('user-name').value.trim();
-            const emailInput = document.getElementById('user-email').value.trim();
-            const errorMessage = document.getElementById('error-message');
+        function storeUserData(formType = 'main') {
+            const nameInput = document.getElementById(formType === 'popup' ? 'popup-user-name' : 'user-name').value.trim();
+            const emailInput = document.getElementById(formType === 'popup' ? 'popup-user-email' : 'user-email').value.trim();
+            const errorMessage = document.getElementById(formType === 'popup' ? 'popup-error-message' : 'error-message');
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (nameInput || emailInput) {
@@ -180,6 +243,9 @@
                 sessionStorage.setItem('userName', nameInput);
                 sessionStorage.setItem('userEmail', emailInput);
                 submitResult(true);
+                if (formType === 'popup') {
+                    closePopup();
+                }
             } else {
                 errorMessage.style.display = 'none';
             }
@@ -281,7 +347,7 @@
             const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at Softbabe Lagos!`);
             const url = encodeURIComponent('https://softbabelagos.com');
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}"e=${text}`, '_blank');
         }
 
         function shareOnTwitter() {
@@ -305,7 +371,20 @@
             window.location.href = 'question1.html';
         }
 
-        window.onload = showResults;
+        // Pop-up Functions
+        function showPopup() {
+            document.getElementById('popup-overlay').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popup-overlay').style.display = 'none';
+        }
+
+        // Show pop-up after 5 seconds
+        window.onload = function() {
+            showResults();
+            setTimeout(showPopup, 5000);
+        };
     </script>
 
 </body>

@@ -11,6 +11,10 @@ body {
     z-index: 1;
 }
 
+.hikmah{
+    font-style: italic;
+}
+
 body::before {
     content: '';
     position: fixed;
