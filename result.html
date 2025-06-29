@@ -178,7 +178,7 @@
             <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
             <p id="result-description"></p>
 
-            <button class="shop-btn" onclick="window.location.href='https://softbabelagos.com'">Shop Your Style</button>
+            <button class="shop-btn" onclick="shopYourStyle()">Shop Your Style</button>
             <button class="retake-btn" onclick="retakeQuiz()">Retake Quiz</button>
 
             <div class="share-section">
@@ -196,7 +196,7 @@
                 <div class="form-container">
                     <h2>Want your personalized Softbabe moodboard and discount code?</h2>
                     <p>Share your details to subscribe and get exclusive perks.</p>
-                    <input type="text" id="popup'User-name" name="name" placeholder="Your Name" required>
+                    <input type="text" id="popup-user-name" name="name" placeholder="Your Name" required>
                     <input type="email" id="popup-user-email" name="email" placeholder="Your Email" required>
                     <input type="checkbox" id="optin" name="_optin">
                     <label for="optin">I agree to join the Softbabe mailing list</label>
@@ -235,8 +235,76 @@
             errorMessage.style.display = 'none';
             sessionStorage.setItem('userName', nameInput);
             sessionStorage.setItem('userEmail', emailInput);
-            alert('Your details have been successfully submitted. Check your email for your moodboard and discount code!');
+            submitResult(true);
             closePopup();
+        }
+
+        function submitResult(includeUserDetails = false) {
+            const userName = sessionStorage.getItem('userName') || '';
+            const userEmail = sessionStorage.getItem('userEmail') || '';
+            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+            const resultTitle = document.getElementById('result-title').innerText;
+
+            if (!resultTitle || !Object.keys(quizAnswers).length) {
+                console.error('Missing quiz data for submission');
+                return;
+            }
+
+            const formData = new FormData();
+            if (includeUserDetails && userName && userEmail) {
+                formData.append('name', userName);
+                formData.append('email', userEmail);
+            }
+            formData.append('finalResult', resultTitle);
+            formData.append('answers', JSON.stringify(quizAnswers));
+
+            fetch('https://formspree.io/f/xeoggvnd', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log('Form submitted successfully:', data);
+                    if (includeUserDetails) {
+                        alert('Your details have been successfully submitted. Check your email for your moodboard and discount code!');
+                    }
+                } else {
+                    console.warn('Submission response received but not successful:', data);
+                    if (includeUserDetails) {
+                        alert('There was a problem submitting your details. Please try again.');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                if (includeUserDetails) {
+                    alert('There was an error submitting your details. Please check your network and try again.');
+                }
+            });
+        }
+
+        function shopYourStyle() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Minimalist';
+            const styleUrls = {
+                'Romantic': 'https://softbabelagos.com/products/romantic-softbabe/2934631?location=206648',
+                'Minimalist': 'https://softbabelagos.com/products/minimalist-softbabe/2934634?location=206648',
+                'Y2K': 'https://softbabelagos.com/products/y2k-softbabe/2934657?location=206648',
+                'Statement Queen': 'https://softbabelagos.com/products/statement-queen-softbabe/2934639?location=206648',
+                'Trendsetter': 'https://softbabelagos.com/products/trendsetter-softbabe/2934643?location=206648',
+                'Boss Babe': 'https://softbabelagos.com/products/boss-babe-softbabe/2934648?location=206648',
+                'Bohemian': 'https://softbabelagos.com/products/bohemian-softbabe/2934650?location=206648',
+                'Sporty': 'https://softbabelagos.com/products/sporty-softbabe/2934653?location=206648',
+                'Edgy': 'https://softbabelagos.com/products/edgy-softbabe/2934660?location=206648',
+                'Afrocentric': 'https://softbabelagos.com/products/afrocentric-softbabe/2934662?location=206648',
+                'Luxe': 'https://softbabelagos.com'
+            };
+            const url = styleUrls[style] || 'https://softbabelagos.com';
+            window.open(url, '_blank');
         }
 
         function showResults() {
@@ -254,23 +322,6 @@
             }
 
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
-
-            // Update result counts in localStorage
-            let resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {
-                'Statement Queen': 0,
-                'Luxe': 0,
-                'Minimalist': 0,
-                'Trendsetter': 0,
-                'Boss Babe': 0,
-                'Bohemian': 0,
-                'Romantic': 0,
-                'Sporty': 0,
-                'Y2K': 0,
-                'Afrocentric': 0,
-                'Edgy': 0
-            };
-            resultCounts[dominantStyle] = (resultCounts[dominantStyle] || 0) + 1;
-            localStorage.setItem('resultCounts', JSON.stringify(resultCounts));
 
             document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
 
@@ -312,6 +363,8 @@
             } else {
                 resultImage.style.display = 'none';
             }
+
+            submitResult(false);
         }
 
         function shareOnFacebook() {
