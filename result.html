@@ -111,7 +111,6 @@
         .share-btn.facebook:hover { background-color: #2f4377; }
         .share-btn.twitter:hover { background-color: #1886c9; }
         .share-btn.instagram:hover { background-color: #c13584; }
-        /* Pop-up Styles */
         .popup-overlay {
             display: none;
             position: fixed;
@@ -160,7 +159,6 @@
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo">
             <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
@@ -174,49 +172,29 @@
         <div id="results" class="results-section">
             <h1 id="result-title">Your Softbabe Style</h1>
             <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
-            <p id="result-jewelry"></p>
+            <p id="result-description"></p>
 
-            <!-- Shop Your Style Button -->
             <button class="shop-btn" onclick="window.location.href='https://softbabelagos.com'">Shop Your Style</button>
-
-            <!-- Retake Quiz Button -->
             <button class="retake-btn" onclick="retakeQuiz()">Retake Quiz</button>
 
-            <!-- Share Buttons -->
             <div class="share-section">
                 <button class="share-btn facebook" onclick="shareOnFacebook()">Share on Facebook</button>
                 <button class="share-btn twitter" onclick="shareOnTwitter()">Share on Twitter</button>
                 <button class="share-btn instagram" onclick="shareOnInstagram()">Share on Instagram</button>
             </div>
-            <br><br>
-
-            <!-- User Form -->
-            <div id="user-form" class="form-section">
-                <form id="user-form">
-                    <div class="form-container">
-                        <h2>Want your personalized Softbabe moodboard and discount code to use anytime? Drop your email!</h2>
-                        <p>Optional: Share your details to get exclusive perks.</p>
-                        <input type="text" id="user-name" name="name" placeholder="Your Name">
-                        <input type="email" id="user-email" name="email" placeholder="Your Email">
-                        <button type="button" class="form-btn" onclick="storeUserData()">Submit</button>
-                        <p id="error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 
-    <!-- Pop-up Form -->
     <div id="popup-overlay" class="popup-overlay">
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">×</span>
             <form id="popup-user-form">
                 <div class="form-container">
-                    <h2>Want your personalized Softbabe moodboard and discount code to use anytime? Drop your email!</h2>
-                    <p>Optional: Share your details to get exclusive perks.</p>
-                    <input type="text" id="popup-user-name" name="name" placeholder="Your Name">
-                    <input type="email" id="popup-user-email" name="email" placeholder="Your Email">
-                    <button type="button" class="form-btn" onclick="storeUserData('popup')">Submit</button>
+                    <h2>Want your personalized Softbabe moodboard and discount code?</h2>
+                    <p>Share your details to get exclusive perks.</p>
+                    <input type="text" id="popup-user-name" name="name" placeholder="Your Name" required>
+                    <input type="email" id="popup-user-email" name="email" placeholder="Your Email" required>
+                    <button type="button" class="form-btn" onclick="storeUserData('popup')">Subscribe</button>
                     <p id="popup-error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
                 </div>
             </form>
@@ -224,31 +202,34 @@
     </div>
 
     <footer>
-        <div>Being soft is a lifestyle.</div>
+        <div class="logo">
+            <img src="newlogo.png" alt="Mini Logo" style="width: 50px;">
+        </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
     </footer>
 
     <script>
-        function storeUserData(formType = 'main') {
-            const nameInput = document.getElementById(formType === 'popup' ? 'popup-user-name' : 'user-name').value.trim();
-            const emailInput = document.getElementById(formType === 'popup' ? 'popup-user-email' : 'user-email').value.trim();
-            const errorMessage = document.getElementById(formType === 'popup' ? 'popup-error-message' : 'error-message');
+        function storeUserData(formType = 'popup') {
+            const nameInput = document.getElementById('popup-user-name').value.trim();
+            const emailInput = document.getElementById('popup-user-email').value.trim();
+            const errorMessage = document.getElementById('popup-error-message');
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (nameInput || emailInput) {
-                if (!nameInput || !emailRegex.test(emailInput)) {
-                    errorMessage.style.display = 'block';
-                    return;
-                }
-                errorMessage.style.display = 'none';
-                sessionStorage.setItem('userName', nameInput);
-                sessionStorage.setItem('userEmail', emailInput);
-                submitResult(true);
-                if (formType === 'popup') {
-                    closePopup();
-                }
-            } else {
-                errorMessage.style.display = 'none';
+            if (!nameInput || !emailRegex.test(emailInput)) {
+                errorMessage.style.display = 'block';
+                return;
             }
+
+            errorMessage.style.display = 'none';
+            sessionStorage.setItem('userName', nameInput);
+            sessionStorage.setItem('userEmail', emailInput);
+            submitResult(true);
+            closePopup();
         }
 
         function submitResult(includeUserDetails = false) {
@@ -315,7 +296,24 @@
 
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
 
-            document.getElementById('result-title').innerText = `${userName}, You’re ${dominantStyle}!`;
+            document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
+
+            const styleDescriptions = {
+                'Statement Queen': 'Bold and fearless, you love pieces that make a statement and turn heads wherever you go.',
+                'Luxe': 'Elegance and sophistication define your style, with a preference for timeless, luxurious pieces.',
+                'Minimalist': 'Sleek and simple, you prefer clean lines and understated elegance in your jewelry.',
+                'Trendsetter': 'Always ahead of the curve, you embrace the latest trends and bold new designs.',
+                'Boss Babe': 'Confident and powerful, your style reflects strength and authority with a chic edge.',
+                'Bohemian': 'Free-spirited and earthy, you love organic, eclectic pieces with a natural vibe.',
+                'Romantic': 'Soft and dreamy, your style leans toward delicate, feminine pieces with a touch of whimsy.',
+                'Sporty': 'Active and dynamic, you prefer functional yet stylish pieces that match your on-the-go lifestyle.',
+                'Y2K': 'Nostalgic and playful, you embrace bold colors and retro-inspired designs.',
+                'Afrocentric': 'Vibrant and cultural, your style celebrates heritage with intricate, meaningful designs.',
+                'Edgy': 'Rebellious and daring, you love unconventional pieces that push boundaries.'
+            };
+
+            const resultDescription = document.getElementById('result-description');
+            resultDescription.innerText = styleDescriptions[dominantStyle] || 'Your unique style shines through!';
 
             const resultImage = document.getElementById('result-image');
             const styleImages = {
@@ -344,15 +342,15 @@
 
         function shareOnFacebook() {
             const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at Softbabe Lagos!`);
             const url = encodeURIComponent('https://softbabelagos.com');
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}"e=${text}`, '_blank');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
         }
 
         function shareOnTwitter() {
             const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
             const url = encodeURIComponent('https://softbabelagos.com');
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
@@ -360,7 +358,7 @@
 
         function shareOnInstagram() {
             const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re ')[1]?.replace('!', '') || 'Softbabe';
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             alert(`To share your result on Instagram:\n1. Take a screenshot of this page.\n2. Post it to your Instagram feed or story with the caption:\n"I'm a ${style}! Discover your Softbabe Style at softbabelagos.com! #SoftbabeLagos"\n3. Tag @softbabelagos for a chance to be featured!`);
         }
 
@@ -368,10 +366,9 @@
             sessionStorage.removeItem('quizAnswers');
             sessionStorage.removeItem('userName');
             sessionStorage.removeItem('userEmail');
-            window.location.href = 'question1.html';
+            window.location.href = 'form.html';
         }
 
-        // Pop-up Functions
         function showPopup() {
             document.getElementById('popup-overlay').style.display = 'flex';
         }
@@ -380,12 +377,10 @@
             document.getElementById('popup-overlay').style.display = 'none';
         }
 
-        // Show pop-up after 5 seconds
         window.onload = function() {
             showResults();
             setTimeout(showPopup, 5000);
         };
     </script>
-
 </body>
 </html>
