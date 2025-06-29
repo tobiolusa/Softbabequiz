@@ -12,7 +12,8 @@ body {
 }
 
 .hikmah{
-    font-style: italic;
+    font-style: normal;
+    font-size: 35px;
 }
 
 body::before {
