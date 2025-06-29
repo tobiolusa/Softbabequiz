@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbabe Style Quiz Statistics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #ffffff;
+            color: #333;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        header {
+            background: #fff;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 50px 20px; 
+            text-align: center; 
+            flex: 1 0 auto; 
+            position: relative; 
+            z-index: 2;
+        }
+        h1 { font-size: 2.5em; color: #000; margin-bottom: 20px; }
+        .stats-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 20px 0; 
+            font-size: 1.2em; 
+            color: #555; 
+        }
+        .stats-list li { 
+            margin: 10px 0; 
+            padding: 10px; 
+            background: #f9f9f9; 
+            border-radius: 5px; 
+        }
+        .home-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .home-btn:hover { background-color: #333; }
+        footer { 
+            background: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+        </div>
+        <a href="https://softbabelagos.com" target="_blank">
+            <button class="home-btn">Shop Now</button>
+        </a>
+    </header>
+
+    <div class="container">
+        <h1>Softbabe Style Quiz Statistics</h1>
+        <p>Below are the counts of each style result from quiz takers:</p>
+        <ul id="stats-list" class="stats-list"></ul>
+        <a href="index.html"><button class="home-btn">Back to Home</button></a>
+    </div>
+
+    <footer>
+        <div class="logo">
+            <img src="newlogo.png" alt="Mini Logo" style="width: 50px;">
+        </div>
+        <div class="socials">
+            <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
+            <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
+            <a href="https://facebook.com/softbabelagos" target="_blank">Facebook</a>
+        </div>
+        <div class="tagline">Being soft is a lifestyle.</div>
+    </footer>
+
+    <script>
+        function displayStats() {
+            const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {
+                'Statement Queen': 0,
+                'Luxe': 0,
+                'Minimalist': 0,
+                'Trendsetter': 0,
+                'Boss Babe': 0,
+                'Bohemian': 0,
+                'Romantic': 0,
+                'Sporty': 0,
+                'Y2K': 0,
+                'Afrocentric': 0,
+                'Edgy': 0
+            };
+
+            const statsList = document.getElementById('stats-list');
+            for (const [style, count] of Object.entries(resultCounts)) {
+                const li = document.createElement('li');
+                li.textContent = `${style} - ${count}`;
+                statsList.appendChild(li);
+            }
+        }
+
+        window.onload = displayStats;
+    </script>
+</body>
+</html>

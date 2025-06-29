@@ -130,7 +130,7 @@
             padding: 20px;
             border-radius: 10px;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             animation: fadeIn 0.5s ease-in;
             display: flex;
             flex-direction: column;
@@ -154,6 +154,10 @@
             font-size: 1em;
             margin: 0 0 20px 0;
             color: #555;
+        }
+        .form-container input[type="checkbox"] {
+            margin: 10px 0;
+            width: auto;
         }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
     </style>
@@ -191,11 +195,13 @@
             <form id="popup-user-form">
                 <div class="form-container">
                     <h2>Want your personalized Softbabe moodboard and discount code?</h2>
-                    <p>Share your details to get exclusive perks.</p>
-                    <input type="text" id="popup-user-name" name="name" placeholder="Your Name" required>
+                    <p>Share your details to subscribe and get exclusive perks.</p>
+                    <input type="text" id="popup'User-name" name="name" placeholder="Your Name" required>
                     <input type="email" id="popup-user-email" name="email" placeholder="Your Email" required>
+                    <input type="checkbox" id="optin" name="_optin">
+                    <label for="optin">I agree to join the Softbabe mailing list</label>
                     <button type="button" class="form-btn" onclick="storeUserData('popup')">Subscribe</button>
-                    <p id="popup-error-message" class="error-message" style="display:none;">Please fill in both fields correctly</p>
+                    <p id="popup-error-message" class="error-message" style="display:none;">Please fill in both fields correctly and check the opt-in box</p>
                 </div>
             </form>
         </div>
@@ -217,10 +223,11 @@
         function storeUserData(formType = 'popup') {
             const nameInput = document.getElementById('popup-user-name').value.trim();
             const emailInput = document.getElementById('popup-user-email').value.trim();
+            const optinCheckbox = document.getElementById('optin').checked;
             const errorMessage = document.getElementById('popup-error-message');
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!nameInput || !emailRegex.test(emailInput)) {
+            if (!nameInput || !emailRegex.test(emailInput) || !optinCheckbox) {
                 errorMessage.style.display = 'block';
                 return;
             }
@@ -228,56 +235,8 @@
             errorMessage.style.display = 'none';
             sessionStorage.setItem('userName', nameInput);
             sessionStorage.setItem('userEmail', emailInput);
-            submitResult(true);
+            alert('Your details have been successfully submitted. Check your email for your moodboard and discount code!');
             closePopup();
-        }
-
-        function submitResult(includeUserDetails = false) {
-            const userName = sessionStorage.getItem('userName') || '';
-            const userEmail = sessionStorage.getItem('userEmail') || '';
-            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
-            const resultTitle = document.getElementById('result-title').innerText;
-
-            if (!resultTitle || !Object.keys(quizAnswers).length) {
-                console.error('Missing quiz data for submission');
-                return;
-            }
-
-            const formData = new FormData();
-            if (includeUserDetails && userName && userEmail) {
-                formData.append('name', userName);
-                formData.append('email', userEmail);
-            }
-            formData.append('finalResult', resultTitle);
-            formData.append('answers', JSON.stringify(quizAnswers));
-
-            fetch('https://formspree.io/f/xeoggvnd', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    console.log('Form submitted successfully:', data);
-                    if (includeUserDetails) {
-                        alert('Your details have been successfully submitted. Check your email for your moodboard and discount code!');
-                    }
-                } else {
-                    console.warn('Submission response received but not successful:', data);
-                    if (includeUserDetails) {
-                        alert('There was a problem submitting your details. Please try again.');
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                if (includeUserDetails) {
-                    alert('There was an error submitting your details. Please check your network and try again.');
-                }
-            });
         }
 
         function showResults() {
@@ -295,6 +254,23 @@
             }
 
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
+
+            // Update result counts in localStorage
+            let resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {
+                'Statement Queen': 0,
+                'Luxe': 0,
+                'Minimalist': 0,
+                'Trendsetter': 0,
+                'Boss Babe': 0,
+                'Bohemian': 0,
+                'Romantic': 0,
+                'Sporty': 0,
+                'Y2K': 0,
+                'Afrocentric': 0,
+                'Edgy': 0
+            };
+            resultCounts[dominantStyle] = (resultCounts[dominantStyle] || 0) + 1;
+            localStorage.setItem('resultCounts', JSON.stringify(resultCounts));
 
             document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
 
@@ -336,8 +312,6 @@
             } else {
                 resultImage.style.display = 'none';
             }
-
-            submitResult(false);
         }
 
         function shareOnFacebook() {
