@@ -102,22 +102,46 @@
 
     <script>
         function displayStats() {
-            const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {
-                'Statement Queen': 0,
-                'Luxe': 0,
-                'Minimalist': 0,
-                'Trendsetter': 0,
+            // Initialize counts for the new grouped styles
+            const defaultCounts = {
+                'Trendsetter Babe': 0,
+                'Luxe Babe': 0,
+                'Romantic Babe': 0,
                 'Boss Babe': 0,
-                'Bohemian': 0,
-                'Romantic': 0,
-                'Sporty': 0,
-                'Y2K': 0,
-                'Afrocentric': 0,
-                'Edgy': 0
+                'Statement Babe': 0
             };
 
-            const statsList = document.getElementById('stats-list');
+            // Map original styles to new grouped styles
+            const styleMapping = {
+                'Statement Queen': 'Trendsetter Babe',
+                'Edgy': 'Trendsetter Babe',
+                'Y2K': 'Trendsetter Babe',
+                'Minimalist': 'Luxe Babe',
+                'Luxe': 'Luxe Babe',
+                'Clean Girl': 'Luxe Babe',
+                'That Girl': 'Luxe Babe',
+                'Romantic': 'Romantic Babe',
+                'Boss Babe': 'Boss Babe',
+                'Bohemian': 'Statement Babe',
+                'Afrocentric': 'Statement Babe',
+                'Cultural': 'Statement Babe'
+            };
+
+            // Retrieve existing counts from localStorage
+            const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {};
+
+            // Aggregate counts for the new grouped styles
+            const groupedCounts = { ...defaultCounts };
             for (const [style, count] of Object.entries(resultCounts)) {
+                const mappedStyle = styleMapping[style] || null;
+                if (mappedStyle && groupedCounts[mappedStyle] !== undefined) {
+                    groupedCounts[mappedStyle] += count;
+                }
+            }
+
+            // Display the grouped counts
+            const statsList = document.getElementById('stats-list');
+            for (const [style, count] of Object.entries(groupedCounts)) {
                 const li = document.createElement('li');
                 li.textContent = `${style} - ${count}`;
                 statsList.appendChild(li);

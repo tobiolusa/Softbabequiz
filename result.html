@@ -250,6 +250,36 @@
                 return;
             }
 
+            // Map original styles to new grouped styles
+            const styleMapping = {
+                'Statement Queen': 'Trendsetter Babe',
+                'Edgy': 'Trendsetter Babe',
+                'Y2K': 'Trendsetter Babe',
+                'Minimalist': 'Luxe Babe',
+                'Luxe': 'Luxe Babe',
+                'Clean Girl': 'Luxe Babe',
+                'That Girl': 'Luxe Babe',
+                'Romantic': 'Romantic Babe',
+                'Boss Babe': 'Boss Babe',
+                'Bohemian': 'Statement Babe',
+                'Afrocentric': 'Statement Babe',
+                'Cultural': 'Statement Babe'
+            };
+
+            // Determine the grouped style from the result title
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Luxe Babe';
+
+            // Update localStorage with the grouped style count
+            const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {
+                'Trendsetter Babe': 0,
+                'Luxe Babe': 0,
+                'Romantic Babe': 0,
+                'Boss Babe': 0,
+                'Statement Babe': 0
+            };
+            resultCounts[style] = (resultCounts[style] || 0) + 1;
+            localStorage.setItem('resultCounts', JSON.stringify(resultCounts));
+
             const formData = new FormData();
             if (includeUserDetails && userName && userEmail) {
                 formData.append('name', userName);
@@ -289,19 +319,13 @@
 
         function shopYourStyle() {
             const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Minimalist';
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Luxe Babe';
             const styleUrls = {
-                'Romantic': 'https://softbabelagos.com/products/romantic-softbabe/2934631?location=206648',
-                'Minimalist': 'https://softbabelagos.com/products/minimalist-softbabe/2934634?location=206648',
-                'Y2K': 'https://softbabelagos.com/products/y2k-softbabe/2934657?location=206648',
-                'Statement Queen': 'https://softbabelagos.com/products/statement-queen-softbabe/2934639?location=206648',
-                'Trendsetter': 'https://softbabelagos.com/products/trendsetter-softbabe/2934643?location=206648',
+                'Trendsetter Babe': 'https://softbabelagos.com/products/y2k-softbabe/2934657?location=206648',
+                'Luxe Babe': 'https://softbabelagos.com/products/minimalist-softbabe/2934634?location=206648',
+                'Romantic Babe': 'https://softbabelagos.com/products/romantic-softbabe/2934631?location=206648',
                 'Boss Babe': 'https://softbabelagos.com/products/boss-babe-softbabe/2934648?location=206648',
-                'Bohemian': 'https://softbabelagos.com/products/bohemian-softbabe/2934650?location=206648',
-                'Sporty': 'https://softbabelagos.com/products/sporty-softbabe/2934653?location=206648',
-                'Edgy': 'https://softbabelagos.com/products/edgy-softbabe/2934660?location=206648',
-                'Afrocentric': 'https://softbabelagos.com/products/afrocentric-softbabe/2934662?location=206648',
-                'Luxe': 'https://softbabelagos.com'
+                'Statement Babe': 'https://softbabelagos.com/products/afrocentric-softbabe/2934662?location=206648'
             };
             const url = styleUrls[style] || 'https://softbabelagos.com';
             window.open(url, '_blank');
@@ -311,32 +335,43 @@
             const answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const userName = sessionStorage.getItem('userName') || 'User';
 
+            // Map original styles to new grouped styles
+            const styleMapping = {
+                'Statement Queen': 'Trendsetter Babe',
+                'Edgy': 'Trendsetter Babe',
+                'Y2K': 'Trendsetter Babe',
+                'Minimalist': 'Luxe Babe',
+                'Luxe': 'Luxe Babe',
+                'Clean Girl': 'Luxe Babe',
+                'That Girl': 'Luxe Babe',
+                'Romantic': 'Romantic Babe',
+                'Boss Babe': 'Boss Babe',
+                'Bohemian': 'Statement Babe',
+                'Afrocentric': 'Statement Babe',
+                'Cultural': 'Statement Babe'
+            };
+
             const styleCounts = {};
             for (let i = 1; i <= 6; i++) {
                 const styles = answers[`q${i}`];
                 if (Array.isArray(styles)) {
                     styles.forEach(style => {
-                        styleCounts[style] = (styleCounts[style] || 0) + 1;
+                        const mappedStyle = styleMapping[style] || 'Luxe Babe';
+                        styleCounts[mappedStyle] = (styleCounts[mappedStyle] || 0) + 1;
                     });
                 }
             }
 
-            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Minimalist');
+            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Luxe Babe');
 
             document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
 
             const styleDescriptions = {
-                'Statement Queen': 'Bold and fearless, you love pieces that make a statement and turn heads wherever you go.',
-                'Luxe': 'Elegance and sophistication define your style, with a preference for timeless, luxurious pieces.',
-                'Minimalist': 'Sleek and simple, you prefer clean lines and understated elegance in your jewelry.',
-                'Trendsetter': 'Always ahead of the curve, you embrace the latest trends and bold new designs.',
+                'Trendsetter Babe': 'You’re bold and always ahead of the curve, embracing edgy, Y2K-inspired designs that make a statement.',
+                'Luxe Babe': 'Your style is elegant and timeless, with a preference for sleek, minimalist, and sophisticated pieces.',
+                'Romantic Babe': 'Soft and dreamy, you love delicate, feminine pieces with a touch of whimsy.',
                 'Boss Babe': 'Confident and powerful, your style reflects strength and authority with a chic edge.',
-                'Bohemian': 'Free-spirited and earthy, you love organic, eclectic pieces with a natural vibe.',
-                'Romantic': 'Soft and dreamy, your style leans toward delicate, feminine pieces with a touch of whimsy.',
-                'Sporty': 'Active and dynamic, you prefer functional yet stylish pieces that match your on-the-go lifestyle.',
-                'Y2K': 'Nostalgic and playful, you embrace bold colors and retro-inspired designs.',
-                'Afrocentric': 'Vibrant and cultural, your style celebrates heritage with intricate, meaningful designs.',
-                'Edgy': 'Rebellious and daring, you love unconventional pieces that push boundaries.'
+                'Statement Babe': 'Vibrant and eclectic, you celebrate cultural and bohemian designs that tell a story.'
             };
 
             const resultDescription = document.getElementById('result-description');
@@ -344,17 +379,11 @@
 
             const resultImage = document.getElementById('result-image');
             const styleImages = {
-                'Statement Queen': 'result/statement.jpeg',
-                'Luxe': 'result/luxe.jpeg',
-                'Minimalist': 'result/minimalist.jpeg',
-                'Trendsetter': 'result/trendsetter.jpeg',
+                'Trendsetter Babe': 'result/y2k.jpeg',
+                'Luxe Babe': 'result/minimalist.jpeg',
+                'Romantic Babe': 'result/romantic.jpeg',
                 'Boss Babe': 'result/bossbabe.jpeg',
-                'Bohemian': 'result/bohemian.jpeg',
-                'Romantic': 'result/romantic.jpeg',
-                'Sporty': 'result/sporty.jpeg',
-                'Y2K': 'result/y2k.jpeg',
-                'Afrocentric': 'result/afrocentric.jpeg',
-                'Edgy': 'result/edgy.jpeg'
+                'Statement Babe': 'result/afrocentric.jpeg'
             };
 
             if (styleImages[dominantStyle]) {
