@@ -250,23 +250,7 @@
                 return;
             }
 
-            // Map original styles to new grouped styles
-            const styleMapping = {
-                'Statement Queen': 'Trendsetter Babe',
-                'Edgy': 'Trendsetter Babe',
-                'Y2K': 'Trendsetter Babe',
-                'Minimalist': 'Luxe Babe',
-                'Luxe': 'Luxe Babe',
-                'Clean Girl': 'Luxe Babe',
-                'That Girl': 'Luxe Babe',
-                'Romantic': 'Romantic Babe',
-                'Boss Babe': 'Boss Babe',
-                'Bohemian': 'Statement Babe',
-                'Afrocentric': 'Statement Babe',
-                'Cultural': 'Statement Babe'
-            };
-
-            // Determine the grouped style from the result title
+            // Extract the grouped style from the result title
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Luxe Babe';
 
             // Update localStorage with the grouped style count
@@ -335,7 +319,7 @@
             const answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const userName = sessionStorage.getItem('userName') || 'User';
 
-            // Map original styles to new grouped styles
+            // Map original styles to the five grouped styles
             const styleMapping = {
                 'Statement Queen': 'Trendsetter Babe',
                 'Edgy': 'Trendsetter Babe',
@@ -348,10 +332,19 @@
                 'Boss Babe': 'Boss Babe',
                 'Bohemian': 'Statement Babe',
                 'Afrocentric': 'Statement Babe',
-                'Cultural': 'Statement Babe'
+                'Cultural': 'Statement Babe',
+                'Sporty': 'Luxe Babe' // Fallback for unmapped styles
             };
 
-            const styleCounts = {};
+            const styleCounts = {
+                'Trendsetter Babe': 0,
+                'Luxe Babe': 0,
+                'Romantic Babe': 0,
+                'Boss Babe': 0,
+                'Statement Babe': 0
+            };
+
+            // Count only the mapped styles
             for (let i = 1; i <= 6; i++) {
                 const styles = answers[`q${i}`];
                 if (Array.isArray(styles)) {
@@ -362,6 +355,7 @@
                 }
             }
 
+            // Find the dominant style among the five grouped styles
             const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Luxe Babe');
 
             document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
