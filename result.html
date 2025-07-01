@@ -319,23 +319,6 @@
             const answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const userName = sessionStorage.getItem('userName') || 'User';
 
-            // Map original styles to the five grouped styles
-            const styleMapping = {
-                'Statement Queen': 'Trendsetter Babe',
-                'Edgy': 'Trendsetter Babe',
-                'Y2K': 'Trendsetter Babe',
-                'Minimalist': 'Luxe Babe',
-                'Luxe': 'Luxe Babe',
-                'Clean Girl': 'Luxe Babe',
-                'That Girl': 'Luxe Babe',
-                'Romantic': 'Romantic Babe',
-                'Boss Babe': 'Boss Babe',
-                'Bohemian': 'Statement Babe',
-                'Afrocentric': 'Statement Babe',
-                'Cultural': 'Statement Babe',
-                'Sporty': 'Luxe Babe' // Fallback for unmapped styles
-            };
-
             const styleCounts = {
                 'Trendsetter Babe': 0,
                 'Luxe Babe': 0,
@@ -344,19 +327,32 @@
                 'Statement Babe': 0
             };
 
-            // Count only the mapped styles
-            for (let i = 1; i <= 6; i++) {
+            // Count selections for each style across q1 to q5
+            for (let i = 1; i <= 5; i++) {
                 const styles = answers[`q${i}`];
                 if (Array.isArray(styles)) {
                     styles.forEach(style => {
-                        const mappedStyle = styleMapping[style] || 'Luxe Babe';
-                        styleCounts[mappedStyle] = (styleCounts[mappedStyle] || 0) + 1;
+                        if (styleCounts.hasOwnProperty(style)) {
+                            styleCounts[style]++;
+                        }
                     });
                 }
             }
 
-            // Find the dominant style among the five grouped styles
-            const dominantStyle = Object.keys(styleCounts).reduce((a, b) => styleCounts[a] > styleCounts[b] ? a : b, 'Luxe Babe');
+            console.log('Quiz answers:', answers);
+            console.log('Style counts:', styleCounts);
+
+            // Find the dominant style with the highest count
+            let dominantStyle = 'Luxe Babe';
+            let maxCount = 0;
+            for (const [style, count] of Object.entries(styleCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    dominantStyle = style;
+                }
+            }
+
+            console.log('Dominant style:', dominantStyle, 'with count:', maxCount);
 
             document.getElementById('result-title').innerText = `${userName}, You’re a ${dominantStyle}!`;
 
