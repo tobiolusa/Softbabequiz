@@ -85,7 +85,7 @@
         <h1>Softbabe Style Quiz Statistics</h1>
         <p>Below are the counts of each style result from quiz takers:</p>
         <ul id="stats-list" class="stats-list"></ul>
-        <a href="index.html"><button class="home-btn">Back to Home</button></a>
+        <a href="form.html"><button class="home-btn">Back to Home</button></a>
     </div>
 
     <footer>
@@ -102,7 +102,7 @@
 
     <script>
         function displayStats() {
-            // Initialize counts for the new grouped styles
+            // Initialize default counts for the five grouped styles
             const defaultCounts = {
                 'Trendsetter Babe': 0,
                 'Luxe Babe': 0,
@@ -111,40 +111,26 @@
                 'Statement Babe': 0
             };
 
-            // Map original styles to new grouped styles
-            const styleMapping = {
-                'Statement Queen': 'Trendsetter Babe',
-                'Edgy': 'Trendsetter Babe',
-                'Y2K': 'Trendsetter Babe',
-                'Minimalist': 'Luxe Babe',
-                'Luxe': 'Luxe Babe',
-                'Clean Girl': 'Luxe Babe',
-                'That Girl': 'Luxe Babe',
-                'Romantic': 'Romantic Babe',
-                'Boss Babe': 'Boss Babe',
-                'Bohemian': 'Statement Babe',
-                'Afrocentric': 'Statement Babe',
-                'Cultural': 'Statement Babe'
-            };
+            // Retrieve counts from localStorage
+            const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || defaultCounts;
 
-            // Retrieve existing counts from localStorage
-            const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {};
-
-            // Aggregate counts for the new grouped styles
-            const groupedCounts = { ...defaultCounts };
-            for (const [style, count] of Object.entries(resultCounts)) {
-                const mappedStyle = styleMapping[style] || null;
-                if (mappedStyle && groupedCounts[mappedStyle] !== undefined) {
-                    groupedCounts[mappedStyle] += count;
+            // Ensure all styles are present in resultCounts
+            Object.keys(defaultCounts).forEach(style => {
+                if (!(style in resultCounts)) {
+                    resultCounts[style] = 0;
                 }
-            }
+            });
 
-            // Display the grouped counts
+            console.log('Result counts from localStorage:', resultCounts);
+
+            // Display the counts
             const statsList = document.getElementById('stats-list');
-            for (const [style, count] of Object.entries(groupedCounts)) {
-                const li = document.createElement('li');
-                li.textContent = `${style} - ${count}`;
-                statsList.appendChild(li);
+            for (const [style, count] of Object.entries(resultCounts)) {
+                if (defaultCounts.hasOwnProperty(style)) {
+                    const li = document.createElement('li');
+                    li.textContent = `${style} - ${count}`;
+                    statsList.appendChild(li);
+                }
             }
         }
 
