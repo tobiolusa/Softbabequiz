@@ -37,7 +37,7 @@
         border: 2px solid #fff;
     }
 </style>
-<body onload="initializePage(1, 6)">
+<body onload="initializePage(1, 5)">
     <header>
         <div class="logo">
             <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
@@ -57,7 +57,6 @@
                     <div class="progress-dot"></div>
                     <div class="progress-dot"></div>
                     <div class="progress-dot"></div>
-                    <div class="progress-dot"></div>
                 </div>
             </div>
 
@@ -65,16 +64,16 @@
                 <h2>How would you describe your overall fashion style?</h2>
                 <p class="multi-select-note">Select up to 2 options</p>
                 <div class="options">
-                    <div class="option" onclick="selectOption(this, 'Romantic Babe', 1)"> Soft, feminine, and romantic ✨</div>
-                    <div class="option" onclick="selectOption(this, 'Statement Babe', 1)"> Cultural, bold, and rooted 🌍</div>
-                    <div class="option" onclick="selectOption(this, 'Luxe Babe', 1)"> Clean, calm, and minimal 🤍</div>
-                    <div class="option" onclick="selectOption(this, 'Trendsetter Babe', 1)"> Edgy, experimental, and trend-forward 🔥</div>
-                    <div class="option" onclick="selectOption(this, 'Boss Babe', 1)"> Powerful, confident, and intentional 💼</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic Babe', 1)">Soft, feminine, and romantic ✨</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Babe', 1)">Cultural, bold, and rooted 🌍</div>
+                    <div class="option" onclick="selectOption(this, 'Luxe Babe', 1)">Clean, calm, and minimal 🤍</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter Babe', 1)">Edgy, experimental, and trend-forward 🔥</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 1)">Powerful, confident, and intentional 💼</div>
                 </div>
             </div>
             <div class="button-container">
                 <button class="back-btn" onclick="prevQuestion(1)">Back</button>
-                <button class="next-btn" onclick="nextQuestion(1, 6)">Next</button>
+                <button class="next-btn" onclick="nextQuestion(1, 5)">Next</button>
             </div>
         </div>
     </div>
@@ -96,32 +95,6 @@
         function initializePage(currentQuestion, totalQuestions) {
             updateProgress(currentQuestion, totalQuestions);
             restoreSelections(currentQuestion);
-        }
-
-        // Override selectOption to enforce a maximum of 2 selections
-        function selectOption(element, style, questionNumber) {
-            const options = document.querySelectorAll('.options .option');
-            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
-            const currentSelections = quizAnswers[`q${questionNumber}`] || [];
-
-            // If the option is already selected, deselect it
-            if (currentSelections.includes(style)) {
-                element.classList.remove('selected');
-                quizAnswers[`q${questionNumber}`] = currentSelections.filter(s => s !== style);
-            } else {
-                // Check if the selection limit (2) is reached
-                if (currentSelections.length >= 2) {
-                    alert('You can select up to 2 options only. Deselect an option to choose another.');
-                    return;
-                }
-                // Select the new option
-                element.classList.add('selected');
-                currentSelections.push(style);
-                quizAnswers[`q${questionNumber}`] = currentSelections;
-            }
-
-            // Save updated selections to sessionStorage
-            sessionStorage.setItem('quizAnswers', JSON.stringify(quizAnswers));
         }
     </script>
 </body>
