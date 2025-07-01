@@ -11,15 +11,31 @@
     body::before {
         margin: 0;
         padding: 0;
-        background-image: url('gallery/5.jpeg') !important; /* Replace with your image path */
+        background-image: url('gallery/5.jpeg') !important;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         height: 100vh;
         width: 100%;
         opacity: 0.3;
-      }
-
+    }
+    .option {
+        background-color: #000;
+        color: #fff;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .option:hover {
+        background-color: #333;
+    }
+    .option.selected {
+        background-color: #a7a2a2;
+        color: #fff;
+        border: 2px solid #fff;
+    }
 </style>
 <body onload="initializePage(3, 6)">
     <header>
@@ -46,20 +62,14 @@
             </div>
 
             <div class="quiz-question">
-                <h2>What color jewelry do you love most?</h2>
-                <p class="multi-select-note">Select all that apply</p>
+                <h2>What color palette are you most drawn to?</h2>
+                <p class="multi-select-note">Select up to 2 options</p>
                 <div class="options">
-                    <div class="option" onclick="selectOption(this, 'Luxe', 3)">A. Gold — bold, timeless, and fits any vibe from luxe to minimalist</div>
-                    <div class="option" onclick="selectOption(this, 'Minimalist', 3)">B. Silver — sleek, cool, and perfect for boss babes, trendsetters, or minimalists</div>
-                    <div class="option" onclick="selectOption(this, 'Statement Queen', 3)">C. Bold, vibrant colors</div>
-                    <div class="option" onclick="selectOption(this, 'Trendsetter', 3)">D. Mixed metals or trending shades</div>
-                    <div class="option" onclick="selectOption(this, 'Boss Babe', 3)">E. Neutral tones like taupe, black, or white</div>
-                    <div class="option" onclick="selectOption(this, 'Bohemian', 3)">F. Earthy tones and natural gemstones</div>
-                    <div class="option" onclick="selectOption(this, 'Romantic', 3)">G. Soft pastels or rose gold</div>
-                    <div class="option" onclick="selectOption(this, 'Sporty', 3)">H. Sporty neons or clean white</div>
-                    <div class="option" onclick="selectOption(this, 'Y2K', 3)">I. Bright candy colors or glitzy Y2K glam</div>
-                    <div class="option" onclick="selectOption(this, 'Afrocentric', 3)">J. Burnt orange, deep greens, gold, or Ankara patterns</div>
-                    <div class="option" onclick="selectOption(this, 'Edgy', 3)">K. Dark tones like black, or deep red</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic Babe', 3)">Pinks, lilacs, soft nudes 💗</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Babe', 3)">Browns, greens, and cultural prints 🌾</div>
+                    <div class="option" onclick="selectOption(this, 'Luxe Babe', 3)">Beige, white, gold, black 🤍</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter Babe', 3)">Bright neons, metallics, bold mixes 🧃</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 3)">Navy, emerald, wine, charcoal 💼</div>
                 </div>
             </div>
             <div class="button-container">
@@ -70,7 +80,9 @@
     </div>
 
     <footer>
-        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="logo">
+            <img src="newlogo.png" alt="Mini Logo" style="width: 50px;">
+        </div>
         <div class="socials">
             <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
             <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
@@ -84,6 +96,32 @@
         function initializePage(currentQuestion, totalQuestions) {
             updateProgress(currentQuestion, totalQuestions);
             restoreSelections(currentQuestion);
+        }
+
+        // Override selectOption to enforce a maximum of 2 selections
+        function selectOption(element, style, questionNumber) {
+            const options = document.querySelectorAll('.options .option');
+            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+            const currentSelections = quizAnswers[`q${questionNumber}`] || [];
+
+            // If the option is already selected, deselect it
+            if (currentSelections.includes(style)) {
+                element.classList.remove('selected');
+                quizAnswers[`q${questionNumber}`] = currentSelections.filter(s => s !== style);
+            } else {
+                // Check if the selection limit (2) is reached
+                if (currentSelections.length >= 2) {
+                    alert('You can select up to 2 options only. Deselect an option to choose another.');
+                    return;
+                }
+                // Select the new option
+                element.classList.add('selected');
+                currentSelections.push(style);
+                quizAnswers[`q${questionNumber}`] = currentSelections;
+            }
+
+            // Save updated selections to sessionStorage
+            sessionStorage.setItem('quizAnswers', JSON.stringify(quizAnswers));
         }
     </script>
 </body>

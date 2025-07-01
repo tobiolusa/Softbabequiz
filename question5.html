@@ -11,15 +11,31 @@
     body::before {
         margin: 0;
         padding: 0;
-        background-image: url('gallery/.jpeg') !important; /* Replace with your image path */
+        background-image: url('gallery/7.jpeg') !important;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         height: 100vh;
         width: 100%;
         opacity: 0.3;
-      }
-
+    }
+    .option {
+        background-color: #000;
+        color: #fff;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .option:hover {
+        background-color: #333;
+    }
+    .option.selected {
+        background-color: #a7a2a2;
+        color: #fff;
+        border: 2px solid #fff;
+    }
 </style>
 <body onload="initializePage(5, 6)">
     <header>
@@ -46,20 +62,14 @@
             </div>
 
             <div class="quiz-question">
-                <h2>Your ideal night-out look?</h2>
-                <p class="multi-select-note">Select all that apply</p>
+                <h2>What kind of jewelry makes you feel most like yourself?</h2>
+                <p class="multi-select-note">Select up to 2 options</p>
                 <div class="options">
-                    <div class="option" onclick="selectOption(this, 'Luxe', 5)">A. A designer dress with gold accessories</div>
-                    <div class="option" onclick="selectOption(this, 'Minimalist', 5)">B. A monochrome outfit with minimal jewelry</div>
-                    <div class="option" onclick="selectOption(this, 'Statement Queen', 5)">C. A bold power outfit with statement earrings</div>
-                    <div class="option" onclick="selectOption(this, 'Trendsetter', 5)">D. A trendy, influencer-inspired look</div>
-                    <div class="option" onclick="selectOption(this, 'Boss Babe', 5)">E. A fitted dress with sleek gold accents</div>
-                    <div class="option" onclick="selectOption(this, 'Bohemian', 5)">F. A flowy, artistic maxi dress</div>
-                    <div class="option" onclick="selectOption(this, 'Romantic', 5)">G. A soft, feminine dress with delicate jewelry</div>
-                    <div class="option" onclick="selectOption(this, 'Sporty', 5)">H. A sporty-chic outfit — think crop top and joggers</div>
-                    <div class="option" onclick="selectOption(this, 'Y2K', 5)">I. Low-rise jeans, a corset top, wedge heels, and layered gloss—Y2K Nollywood queen vibes</div>
-                    <div class="option" onclick="selectOption(this, 'Afrocentric', 5)">J. Ankara prints, headwrap, and stacked jewelry</div>
-                    <div class="option" onclick="selectOption(this, 'Edgy', 5)">K. A graphic tee, baggy pants, and experimental makeup</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic Babe', 5)">Pearl studs, heart pendant, or soft anklet 💕</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Babe', 5)">Beaded bracelets, wooden hoops, shell earrings 🌿</div>
+                    <div class="option" onclick="selectOption(this, 'Luxe Babe', 5)">Thin gold chain, tiny huggies, or a polished ring 💍</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter Babe', 5)">Chunky chain, pop-color earrings, or layered sets 🔥</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 5)">Large gold ring, bold studs, or boss-link chain 👑</div>
                 </div>
             </div>
             <div class="button-container">
@@ -70,7 +80,9 @@
     </div>
 
     <footer>
-        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="logo">
+            <img src="newlogo.png" alt="Mini Logo" style="width: 50px;">
+        </div>
         <div class="socials">
             <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
             <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
@@ -84,6 +96,32 @@
         function initializePage(currentQuestion, totalQuestions) {
             updateProgress(currentQuestion, totalQuestions);
             restoreSelections(currentQuestion);
+        }
+
+        // Override selectOption to enforce a maximum of 2 selections
+        function selectOption(element, style, questionNumber) {
+            const options = document.querySelectorAll('.options .option');
+            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+            const currentSelections = quizAnswers[`q${questionNumber}`] || [];
+
+            // If the option is already selected, deselect it
+            if (currentSelections.includes(style)) {
+                element.classList.remove('selected');
+                quizAnswers[`q${questionNumber}`] = currentSelections.filter(s => s !== style);
+            } else {
+                // Check if the selection limit (2) is reached
+                if (currentSelections.length >= 2) {
+                    alert('You can select up to 2 options only. Deselect an option to choose another.');
+                    return;
+                }
+                // Select the new option
+                element.classList.add('selected');
+                currentSelections.push(style);
+                quizAnswers[`q${questionNumber}`] = currentSelections;
+            }
+
+            // Save updated selections to sessionStorage
+            sessionStorage.setItem('quizAnswers', JSON.stringify(quizAnswers));
         }
     </script>
 </body>

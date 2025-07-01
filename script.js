@@ -3,8 +3,7 @@ let answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {
     q2: [],
     q3: [],
     q4: [],
-    q5: [],
-    q6: []
+    q5: []
 };
 
 function selectOption(element, style, questionNum) {
@@ -15,10 +14,15 @@ function selectOption(element, style, questionNum) {
         element.classList.remove('selected');
         answers[questionKey] = answers[questionKey].filter(s => s !== style);
     } else {
+        if (answers[questionKey].length >= 2) {
+            alert('You can select up to 2 options only. Deselect an option to choose another.');
+            return;
+        }
         element.classList.add('selected');
         answers[questionKey].push(style);
     }
     sessionStorage.setItem('quizAnswers', JSON.stringify(answers));
+    console.log(`Question ${questionNum} selections:`, answers[questionKey]); // Debug
 }
 
 function restoreSelections(questionNum) {
@@ -36,16 +40,18 @@ function restoreSelections(questionNum) {
 
 function nextQuestion(currentQuestion, totalQuestions) {
     const questionKey = `q${currentQuestion}`;
-    if (answers[questionKey].length === 0) {
+    console.log(`Checking selections for Q${currentQuestion}:`, answers[questionKey]); // Debug
+    if (!Array.isArray(answers[questionKey]) || answers[questionKey].length === 0) {
         alert('Please select at least one option before moving on!');
         return;
     }
     sessionStorage.setItem('quizAnswers', JSON.stringify(answers));
     if (currentQuestion < totalQuestions) {
+        console.log(`Navigating to question${currentQuestion + 1}.html`); // Debug
         window.location.href = `question${currentQuestion + 1}.html`;
     } else {
-        submitQuizToServer();
-        window.location.href = 'result.html';
+        console.log('Navigating to results.html'); // Debug
+        window.location.href = 'results.html';
     }
 }
 
@@ -61,39 +67,10 @@ function prevQuestion(currentQuestion) {
 function updateProgress(currentQuestion, totalQuestions) {
     const progressBar = document.getElementById('progress-bar');
     const progressDots = document.querySelectorAll('.progress-dot');
-    const progressPercentage = ((currentQuestion - 1) / totalQuestions) * 100;
+    const progressPercentage = (currentQuestion / totalQuestions) * 100;
     progressBar.style.width = `${progressPercentage}%`;
     progressDots.forEach((dot, index) => {
         if (index < currentQuestion) dot.classList.add('active');
         else dot.classList.remove('active');
-    });
-}
-
-function submitQuizToServer() {
-    const userName = sessionStorage.getItem('userName');
-    const userEmail = sessionStorage.getItem('userEmail');
-    const data = {
-        name: userName,
-        email: userEmail,
-        answers: JSON.stringify(answers)
-    };
-
-    fetch('submit_quiz.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams(data).toString()
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            console.log('Quiz submitted successfully');
-        } else {
-            console.error('Error:', result.error);
-        }
-    })
-    .catch(error => {
-        console.error('Fetch error:', error);
     });
 }

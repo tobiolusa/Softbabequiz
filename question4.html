@@ -11,15 +11,31 @@
     body::before {
         margin: 0;
         padding: 0;
-        background-image: url('gallery/6.jpeg') !important; /* Replace with your image path */
+        background-image: url('gallery/6.jpeg') !important;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         height: 100vh;
         width: 100%;
         opacity: 0.3;
-      }
-
+    }
+    .option {
+        background-color: #000;
+        color: #fff;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .option:hover {
+        background-color: #333;
+    }
+    .option.selected {
+        background-color: #a7a2a2;
+        color: #fff;
+        border: 2px solid #fff;
+    }
 </style>
 <body onload="initializePage(4, 6)">
     <header>
@@ -46,20 +62,14 @@
             </div>
 
             <div class="quiz-question">
-                <h2>Pick your dream vacation spot</h2>
-                <p class="multi-select-note">Select all that apply</p>
+                <h2>What’s your ideal going-out look?</h2>
+                <p class="multi-select-note">Select up to 2 options</p>
                 <div class="options">
-                    <div class="option" onclick="selectOption(this, 'Luxe', 4)">A. Paris, for luxury shopping</div>
-                    <div class="option" onclick="selectOption(this, 'Minimalist', 4)">B. A peaceful beach retreat</div>
-                    <div class="option" onclick="selectOption(this, 'Statement Queen', 4)">C. A fashion-forward city like NYC</div>
-                    <div class="option" onclick="selectOption(this, 'Trendsetter', 4)">D. Tokyo, to explore cool fashion trends</div>
-                    <div class="option" onclick="selectOption(this, 'Boss Babe', 4)">E. London — where power suits meet afternoon tea</div>
-                    <div class="option" onclick="selectOption(this, 'Bohemian', 4)">F. Bali, for a spiritual getaway</div>
-                    <div class="option" onclick="selectOption(this, 'Romantic', 4)">G. A romantic getaway in Santorini</div>
-                    <div class="option" onclick="selectOption(this, 'Sporty', 4)">H. LA, for laid-back vibes and gym runs</div>
-                    <div class="option" onclick="selectOption(this, 'Y2K', 4)">I. A city escape where you can rock Y2K fits like you’re in an early Nollywood movie</div>
-                    <div class="option" onclick="selectOption(this, 'Afrocentric', 4)">J. Lagos or Accra — for Afrobeat parties, Ankara slay, and cultural richness</div>
-                    <div class="option" onclick="selectOption(this, 'Edgy', 4)">K. Berlin or Lagos Island — for underground shows, street style, and alté culture</div>
+                    <div class="option" onclick="selectOption(this, 'Romantic Babe', 4)">Flowy dress, glossy lips, soft jewelry 🌸</div>
+                    <div class="option" onclick="selectOption(this, 'Statement Babe', 4)">Ankara set or earthy co-ord with statement pieces 🌺</div>
+                    <div class="option" onclick="selectOption(this, 'Luxe Babe', 4)">White shirt + tailored pants + minimal gold ✨</div>
+                    <div class="option" onclick="selectOption(this, 'Trendsetter Babe', 4)">Bold outfit, sneakers, and loud jewelry 🧨</div>
+                    <div class="option" onclick="selectOption(this, 'Boss Babe', 4)">Blazer, heels, sleek bun, statement earrings 🖤</div>
                 </div>
             </div>
             <div class="button-container">
@@ -70,7 +80,9 @@
     </div>
 
     <footer>
-        <div class="logo"> <img src="newlogo.png" alt="Mini Logo" style="width: 50px;" > </div>
+        <div class="logo">
+            <img src="newlogo.png" alt="Mini Logo" style="width: 50px;">
+        </div>
         <div class="socials">
             <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
             <a href="https://twitter.com/softbabelagos" target="_blank">Twitter</a> |
@@ -84,6 +96,32 @@
         function initializePage(currentQuestion, totalQuestions) {
             updateProgress(currentQuestion, totalQuestions);
             restoreSelections(currentQuestion);
+        }
+
+        // Override selectOption to enforce a maximum of 2 selections
+        function selectOption(element, style, questionNumber) {
+            const options = document.querySelectorAll('.options .option');
+            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+            const currentSelections = quizAnswers[`q${questionNumber}`] || [];
+
+            // If the option is already selected, deselect it
+            if (currentSelections.includes(style)) {
+                element.classList.remove('selected');
+                quizAnswers[`q${questionNumber}`] = currentSelections.filter(s => s !== style);
+            } else {
+                // Check if the selection limit (2) is reached
+                if (currentSelections.length >= 2) {
+                    alert('You can select up to 2 options only. Deselect an option to choose another.');
+                    return;
+                }
+                // Select the new option
+                element.classList.add('selected');
+                currentSelections.push(style);
+                quizAnswers[`q${questionNumber}`] = currentSelections;
+            }
+
+            // Save updated selections to sessionStorage
+            sessionStorage.setItem('quizAnswers', JSON.stringify(quizAnswers));
         }
     </script>
 </body>
