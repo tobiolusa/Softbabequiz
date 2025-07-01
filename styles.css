@@ -23,7 +23,7 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: url('bg/softbabeground.png') no-repeat center center;
+    background: url('bg/homeland.jpg') no-repeat center center;
     background-size: cover;
     opacity: 0.3;
     z-index: -1;
