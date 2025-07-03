@@ -105,6 +105,8 @@
             background-color: #555;
             margin: 5px;
         }
+        .share-btn.whatsapp:hover { background-color: #20b058; }
+        .share-btn.whatsapp { background-color: #25D366; }
         .share-btn.facebook { background-color: #3b5998; }
         .share-btn.twitter { background-color: #1da1f2; }
         .share-btn.instagram { background-color: #e4405f; }
@@ -183,8 +185,11 @@
 
             <div class="share-section">
                 <button class="share-btn facebook" onclick="shareOnFacebook()">Share on Facebook</button>
+                <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">Share on WhatsApp</button>
                 <button class="share-btn twitter" onclick="shareOnTwitter()">Share on Twitter</button>
                 <button class="share-btn instagram" onclick="shareOnInstagram()">Share on Instagram</button>
+                
+            </div>
             </div>
         </div>
     </div>
@@ -391,11 +396,20 @@
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
         }
 
+        function shareOnWhatsApp() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
+            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at softbabelagos.com/form.html! #SoftbabeLagos`);
+            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
+            window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
+        }
+
         function shareOnTwitter() {
             const resultTitle = document.getElementById('result-title').innerText;
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
-            const url = encodeURIComponent('https://softbabelagos.com');
+            const url = encodeURIComponent('
+            https://softbabequiz.vercel.app/form.html');
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
         }
 
