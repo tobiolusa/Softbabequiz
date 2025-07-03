@@ -250,10 +250,7 @@
                 return;
             }
 
-            // Extract the grouped style from the result title
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Luxe Babe';
-
-            // Update localStorage with the grouped style count
             const resultCounts = JSON.parse(localStorage.getItem('resultCounts')) || {
                 'Trendsetter Babe': 0,
                 'Luxe Babe': 0,
@@ -327,7 +324,7 @@
                 'Statement Babe': 0
             };
 
-            // Count selections for each style across q1 to q5
+            // Count selections across q1 to q5
             for (let i = 1; i <= 5; i++) {
                 const styles = answers[`q${i}`];
                 if (Array.isArray(styles)) {
@@ -428,5 +425,5 @@
             setTimeout(showPopup, 5000);
         };
     </script>
-</body> 
+</body>
 </html>
