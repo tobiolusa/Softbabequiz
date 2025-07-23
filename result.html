@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Softbabe Style Result</title>
+    <title>Your Softbabe Style Result Here</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         html, body { height: 100%; margin: 0; padding: 0; }
@@ -408,8 +408,7 @@
             const resultTitle = document.getElementById('result-title').innerText;
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
-            const url = encodeURIComponent('
-            https://softbabequiz.vercel.app/form.html');
+            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
         }
 
