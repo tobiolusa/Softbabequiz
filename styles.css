@@ -23,14 +23,14 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: url('bg/homeland.jpg') no-repeat center center;
+    background: url('bg/homeland1.jpeg') no-repeat center center;
     background-size: cover;
     opacity: 0.3;
     z-index: -1;
 }
 header {
     background: #fff;
-    padding: 20px;
+    padding: 10px;
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
@@ -140,7 +140,7 @@ p { font-size: 1.2em; margin-bottom: 30px; color: #555; animation: fadeIn 1.5s e
 footer { 
     background: #000; 
     color: #fff; 
-    padding: 20px 0; 
+    padding: 10px 0; 
     text-align: center; 
     font-size: 0.9em; 
     flex-shrink: 0; 
