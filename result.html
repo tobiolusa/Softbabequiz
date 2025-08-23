@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Your Softbabe Style Result</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        html, body { height: 100%; margin: 0; padding: 0; }
+        html, body { 
+            height: 100%; 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Montserrat', sans-serif;
             background: #ffffff;
@@ -17,47 +22,91 @@
             min-height: 100vh;
             position: relative;
             z-index: 1;
+            font-size: clamp(16px, 2.5vw, 18px);
         }
         header {
             background: #fff;
-            padding: 20px;
+            padding: clamp(10px, 3vw, 15px);
             border-bottom: 1px solid #eee;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             position: relative;
             z-index: 2;
         }
+        .logo img {
+            width: clamp(60px, 15vw, 80px);
+            height: auto;
+        }
         .container { 
+            width: 90%;
             max-width: 800px; 
             margin: 0 auto; 
-            padding: 50px 20px; 
+            padding: clamp(20px, 5vw, 40px) 10px; 
             text-align: center; 
             flex: 1 0 auto; 
             position: relative; 
             z-index: 2;
         }
-        h1 { font-size: 2.5em; color: #000; }
-        p { font-size: 1.2em; margin-bottom: 30px; color: #555; }
+        h1 { 
+            font-size: clamp(1.8em, 6vw, 2.2em); 
+            color: #000; 
+            margin: 0 0 20px;
+        }
+        p { 
+            font-size: clamp(1em, 3vw, 1.1em); 
+            margin-bottom: 20px; 
+            color: #555; 
+        }
         .shop-btn, .retake-btn, .form-btn, .share-btn {
-            padding: 15px 40px; font-size: 1.1em; background-color: #000; color: #fff;
-            border: none; border-radius: 25px; cursor: pointer; margin: 10px;
+            padding: clamp(10px, 2.5vw, 12px) clamp(20px, 5vw, 30px);
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 8px;
+            min-width: 120px;
+            touch-action: manipulation;
         }
         .retake-btn { background-color: #ff6b6b; }
         .retake-btn:hover { background-color: #ff4d4d; }
         .shop-btn:hover, .form-btn:hover, .share-btn:hover { background-color: #333; }
         .results-section { animation: slideIn 0.8s ease-in; }
+        #result-image {
+            width: 100%;
+            max-width: 600px;
+            max-height: 50vh;
+            height: auto;
+            display: none;
+            margin: 20px auto;
+            object-fit: cover;
+        }
         footer { 
             background: #000; 
             color: #fff; 
-            padding: 20px 0; 
+            padding: clamp(15px, 4vw, 20px) 10px; 
             text-align: center; 
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        .socials a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
+        }
+        .tagline { margin-top: 10px; }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateY(50px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
         .form-section {
+            width: 90%;
             max-width: 500px;
             margin: 20px auto;
-            padding: 20px;
+            padding: clamp(15px, 4vw, 20px);
             background: #f9f9f9;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -68,42 +117,47 @@
             align-items: center;
         }
         .form-container h2 {
-            font-size: 1.8em;
+            font-size: clamp(1.5em, 4vw, 1.8em);
             margin-bottom: 10px;
             color: #000;
         }
         .form-container p {
-            font-size: 1em;
-            margin-bottom: 20px;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            margin-bottom: 15px;
             color: #555;
         }
         .form-container input {
             width: 100%;
             max-width: 400px;
-            padding: 12px;
-            margin: 10px 0;
+            padding: clamp(10px, 2.5vw, 12px);
+            margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 1em;
+            font-size: clamp(0.9em, 2.5vw, 1em);
             font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
         }
         .form-container button {
             width: 100%;
             max-width: 400px;
+            min-height: 44px;
         }
         .error-message {
             color: #ff4d4d;
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
             margin-top: 10px;
         }
         .share-section {
             margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
         .share-btn {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #555;
-            margin: 5px;
+            padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 20px);
+            font-size: clamp(0.8em, 2.5vw, 0.9em);
+            min-width: 100px;
         }
         .share-btn.whatsapp:hover { background-color: #20b058; }
         .share-btn.whatsapp { background-color: #25D366; }
@@ -124,12 +178,14 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            overflow-y: auto;
         }
         .popup-content {
             background: #fff;
-            max-width: 500px;
             width: 90%;
-            padding: 20px;
+            max-width: 500px;
+            min-height: 300px;
+            padding: clamp(15px, 4vw, 20px);
             border-radius: 10px;
             position: relative;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -138,36 +194,75 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            box-sizing: border-box;
         }
         .close-btn {
             position: absolute;
             top: 10px;
             right: 15px;
-            font-size: 1.5em;
+            font-size: clamp(1.2em, 3vw, 1.5em);
             cursor: pointer;
             color: #333;
         }
         .popup-content .form-container h2 {
-            font-size: 1.8em;
+            font-size: clamp(1.5em, 4vw, 1.8em);
             margin: 0 0 10px 0;
             color: #000;
         }
         .popup-content .form-container p {
-            font-size: 1em;
-            margin: 0 0 20px 0;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            margin: 0 0 15px 0;
             color: #555;
         }
         .form-container input[type="checkbox"] {
-            margin: 10px 0;
+            margin: 10px 5px 10px 0;
             width: auto;
+            transform: scale(1.2);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .form-container label {
+            font-size: clamp(0.9em, 2.5vw, 1em);
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: scale(0.8); } 
+            to { opacity: 1; transform: scale(1); } 
+        }
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .shop-btn, .retake-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .share-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .share-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            .popup-content {
+                width: 95%;
+                padding: 15px;
+            }
+            .form-container input,
+            .form-container button {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 400px) {
+            h1 { font-size: clamp(1.5em, 5vw, 1.8em); }
+            p { font-size: clamp(0.8em, 2.5vw, 0.9em); }
+            .form-container h2 { font-size: clamp(1.2em, 4vw, 1.5em); }
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="softbabe.jpeg" alt="Softbabe Logo" style="width: 80px;">
+            <img src="softbabe.jpeg" alt="Softbabe Logo">
         </div>
         <a href="https://softbabelagos.com" target="_blank">
             <button class="shop-btn">Shop Now</button>
@@ -177,7 +272,7 @@
     <div class="container">
         <div id="results" class="results-section">
             <h1 id="result-title">Your Softbabe Style</h1>
-            <img id="result-image" src="" alt="Your Style Image" style="max-width: 600px; height: 600px; display: none; margin: 20px auto;">
+            <img id="result-image" src="" alt="Your Style Image">
             <p id="result-description"></p>
 
             <button class="shop-btn" onclick="shopYourStyle()">Shop Your Style</button>
@@ -213,7 +308,7 @@
 
     <footer>
         <div class="logo">
-            <img src="newlogo.png" alt="Mini Logo" style="width: 50px;">
+            <img src="newlogo.png" alt="Mini Logo">
         </div>
         <div class="socials">
             <a href="https://instagram.com/softbabelagos" target="_blank">Instagram</a> |
@@ -246,7 +341,6 @@
             const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const resultTitle = document.getElementById('result-title').innerText;
 
-            // Send form and quiz data to submit.php
             const formData = new FormData();
             formData.append('name', nameInput);
             formData.append('email', emailInput);
@@ -296,7 +390,6 @@
             resultCounts[style] = (resultCounts[style] || 0) + 1;
             localStorage.setItem('resultCounts', JSON.stringify(resultCounts));
 
-            // Send quiz data to submit.php
             const formData = new FormData();
             formData.append('finalResult', resultTitle);
             formData.append('answers', JSON.stringify(quizAnswers));
