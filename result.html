@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Softbabe Style Result Here</title>
+    <title>Your Softbabe Style Result</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         html, body { height: 100%; margin: 0; padding: 0; }
@@ -188,8 +188,6 @@
                 <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">Share on WhatsApp</button>
                 <button class="share-btn twitter" onclick="shareOnTwitter()">Share on Twitter</button>
                 <button class="share-btn instagram" onclick="shareOnInstagram()">Share on Instagram</button>
-                
-            </div>
             </div>
         </div>
     </div>
@@ -200,13 +198,14 @@
             <form id="popup-user-form">
                 <div class="form-container">
                     <h2>Want your personalized Softbabe moodboard and discount code?</h2>
-                    <p>Share your details to subscribe and get exclusive perks.</p>
+                    <p>This style is dropping exclusively for our waitlist members.</p>
                     <input type="text" id="popup-user-name" name="name" placeholder="Your Name" required>
                     <input type="email" id="popup-user-email" name="email" placeholder="Your Email" required>
-                    <input type="checkbox" id="optin" name="_optin">
+                    <input type="text" id="popup-user-instagram" name="instagram" placeholder="Your Instagram Handle" required>
+                    <input type="checkbox" id="optin" name="optin">
                     <label for="optin">I agree to join the Softbabe mailing list</label>
-                    <button type="button" class="form-btn" onclick="storeUserData('popup')">Subscribe</button>
-                    <p id="popup-error-message" class="error-message" style="display:none;">Please fill in both fields correctly and check the opt-in box</p>
+                    <button type="button" class="form-btn" onclick="storeUserData('popup')">Add Me to the Waitlist</button>
+                    <p id="popup-error-message" class="error-message" style="display:none;">Please fill in all fields correctly and check the opt-in box</p>
                 </div>
             </form>
         </div>
@@ -228,25 +227,56 @@
         function storeUserData(formType = 'popup') {
             const nameInput = document.getElementById('popup-user-name').value.trim();
             const emailInput = document.getElementById('popup-user-email').value.trim();
+            const instagramInput = document.getElementById('popup-user-instagram').value.trim();
             const optinCheckbox = document.getElementById('optin').checked;
             const errorMessage = document.getElementById('popup-error-message');
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!nameInput || !emailRegex.test(emailInput) || !optinCheckbox) {
+            if (!nameInput || !emailRegex.test(emailInput) || !instagramInput || !optinCheckbox) {
                 errorMessage.style.display = 'block';
+                errorMessage.innerText = 'Please fill in all fields correctly and check the opt-in box';
                 return;
             }
 
             errorMessage.style.display = 'none';
             sessionStorage.setItem('userName', nameInput);
             sessionStorage.setItem('userEmail', emailInput);
-            submitResult(true);
-            closePopup();
+            sessionStorage.setItem('userInstagram', instagramInput);
+
+            const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
+            const resultTitle = document.getElementById('result-title').innerText;
+
+            // Send form and quiz data to submit.php
+            const formData = new FormData();
+            formData.append('name', nameInput);
+            formData.append('email', emailInput);
+            formData.append('instagram', instagramInput);
+            formData.append('optin', 'on');
+            formData.append('finalResult', resultTitle);
+            formData.append('answers', JSON.stringify(quizAnswers));
+
+            fetch('submit.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Data submitted successfully:', data);
+                    alert('You’re now on the waitlist!\nYou’ll be the first to shop your Luxe Babe box + get a free Essential Box when we go live.\nDon’t forget to follow us on Instagram we’ll be sharing exclusive updates and sneak peeks on Close Friends');
+                    closePopup();
+                } else {
+                    console.error('Submission error:', data.message);
+                    alert('There was a problem adding you to the waitlist: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting data:', error);
+                alert('There was an error submitting your details. Please check your network and try again.');
+            });
         }
 
-        function submitResult(includeUserDetails = false) {
-            const userName = sessionStorage.getItem('userName') || '';
-            const userEmail = sessionStorage.getItem('userEmail') || '';
+        function submitResult() {
             const quizAnswers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const resultTitle = document.getElementById('result-title').innerText;
 
@@ -266,40 +296,25 @@
             resultCounts[style] = (resultCounts[style] || 0) + 1;
             localStorage.setItem('resultCounts', JSON.stringify(resultCounts));
 
+            // Send quiz data to submit.php
             const formData = new FormData();
-            if (includeUserDetails && userName && userEmail) {
-                formData.append('name', userName);
-                formData.append('email', userEmail);
-            }
             formData.append('finalResult', resultTitle);
             formData.append('answers', JSON.stringify(quizAnswers));
 
-            fetch('https://formspree.io/f/xeoggvnd', {
+            fetch('submit.php', {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
-                if (data.ok) {
-                    console.log('Form submitted successfully:', data);
-                    if (includeUserDetails) {
-                        alert('Your details have been successfully submitted. Check your email for your moodboard and discount code!');
-                    }
+                if (data.success) {
+                    console.log('Quiz results submitted successfully:', data);
                 } else {
-                    console.warn('Submission response received but not successful:', data);
-                    if (includeUserDetails) {
-                        alert('There was a problem submitting your details. Please try again.');
-                    }
+                    console.warn('Submission error:', data.message);
                 }
             })
             .catch(error => {
-                console.error('Error submitting form:', error);
-                if (includeUserDetails) {
-                    alert('There was an error submitting your details. Please check your network and try again.');
-                }
+                console.error('Error submitting quiz data:', error);
             });
         }
 
@@ -317,6 +332,52 @@
             window.open(url, '_blank');
         }
 
+        function shareOnFacebook() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
+            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at Softbabe Lagos!`);
+            const url = encodeURIComponent('https://softbabequiz.vercel.app');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
+        }
+
+        function shareOnWhatsApp() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
+            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at softbabequiz.vercel.app/form.html! #SoftbabeLagos`);
+            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
+            window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
+            const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
+            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
+
+        function shareOnInstagram() {
+            const resultTitle = document.getElementById('result-title').innerText;
+            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
+            alert(`To share your result on Instagram:\n1. Take a screenshot of this page.\n2. Post it to your Instagram feed or story with the caption:\n"I'm a ${style}! Discover your Softbabe Style at softbabequiz.vercel.app! #SoftbabeLagos"\n3. Tag @softbabelagos for a chance to be featured!`);
+        }
+
+        function retakeQuiz() {
+            sessionStorage.removeItem('quizAnswers');
+            sessionStorage.removeItem('userName');
+            sessionStorage.removeItem('userEmail');
+            sessionStorage.removeItem('userInstagram');
+            window.location.href = 'form.html';
+        }
+
+        function showPopup() {
+            document.getElementById('popup-overlay').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popup-overlay').style.display = 'none';
+        }
+
         function showResults() {
             const answers = JSON.parse(sessionStorage.getItem('quizAnswers')) || {};
             const userName = sessionStorage.getItem('userName') || 'User';
@@ -329,7 +390,6 @@
                 'Statement Babe': 0
             };
 
-            // Count selections across q1 to q5
             for (let i = 1; i <= 5; i++) {
                 const styles = answers[`q${i}`];
                 if (Array.isArray(styles)) {
@@ -344,7 +404,6 @@
             console.log('Quiz answers:', answers);
             console.log('Style counts:', styleCounts);
 
-            // Find the dominant style with the highest count
             let dominantStyle = 'Luxe Babe';
             let maxCount = 0;
             for (const [style, count] of Object.entries(styleCounts)) {
@@ -385,52 +444,7 @@
                 resultImage.style.display = 'none';
             }
 
-            submitResult(false);
-        }
-
-        function shareOnFacebook() {
-            const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
-            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at Softbabe Lagos!`);
-            const url = encodeURIComponent('https://softbabelagos.com');
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
-        }
-
-        function shareOnWhatsApp() {
-            const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
-            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at softbabelagos.com/form.html! #SoftbabeLagos`);
-            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
-            window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
-        }
-
-        function shareOnTwitter() {
-            const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
-            const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
-            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
-            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-        }
-
-        function shareOnInstagram() {
-            const resultTitle = document.getElementById('result-title').innerText;
-            const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
-            alert(`To share your result on Instagram:\n1. Take a screenshot of this page.\n2. Post it to your Instagram feed or story with the caption:\n"I'm a ${style}! Discover your Softbabe Style at softbabelagos.com! #SoftbabeLagos"\n3. Tag @softbabelagos for a chance to be featured!`);
-        }
-
-        function retakeQuiz() {
-            sessionStorage.removeItem('quizAnswers');
-            sessionStorage.removeItem('userName');
-            sessionStorage.removeItem('userEmail');
-            window.location.href = 'form.html';
-        }
-
-        function showPopup() {
-            document.getElementById('popup-overlay').style.display = 'flex';
-        }
-
-        function closePopup() {
-            document.getElementById('popup-overlay').style.display = 'none';
+            submitResult();
         }
 
         window.onload = function() {
