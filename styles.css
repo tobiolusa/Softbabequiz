@@ -11,6 +11,10 @@ body {
     z-index: 1;
 }
 
+.subtext{
+    margin-top: -25px;
+}
+
 .hikmah{
     font-style: normal;
     font-size:32px;
