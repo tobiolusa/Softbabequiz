@@ -33,7 +33,7 @@ body::before {
 @media (max-width: 768px) {
   body::before {
     background-size: contain;
-    background-color: #000; /* fills gaps if image doesn't cover */
+  /* fills gaps if image doesn't cover */
   }
 }
 
