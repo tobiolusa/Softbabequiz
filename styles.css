@@ -13,9 +13,9 @@ body {
 
 .hikmah{
     font-style: normal;
-    font-size: 58px;
+    font-size:30px;
     letter-spacing: 8px; 
-    font-family: "Modular";
+    font-family: 'Montserrat', sans-serif;
 }
 
 body::before {
@@ -30,12 +30,12 @@ body::before {
     opacity: 0.4;
     z-index: -1;
 }
-@media (max-width: 768px) {
+
+/* @media (max-width: 768px) {
   body::before {
     background-size: contain;
-  /* fills gaps if image doesn't cover */
   }
-}
+} */
 
 header {
     background: #fff;
