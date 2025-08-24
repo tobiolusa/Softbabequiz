@@ -13,7 +13,8 @@ body {
 
 .hikmah{
     font-style: normal;
-    font-size: 30px;
+    font-size: 44px;
+    font-family: "Modular";
 }
 
 body::before {
@@ -25,7 +26,7 @@ body::before {
     height: 100vh;
     background: url('bg/homeland1.jpeg') no-repeat center center;
     background-size: cover;
-    opacity: 0.3;
+    opacity: 0.4;
     z-index: -1;
 }
 header {
