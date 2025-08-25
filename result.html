@@ -292,8 +292,10 @@
             <span class="close-btn" onclick="closePopup()">×</span>
             <form id="popup-user-form">
                 <div class="form-container">
-                    <h2>We are curating your perfect jewelry box</h2>
+                    <h2>We Are Curating Your <br>Perfect Jewelry Box</h2>
                     <p>This style is dropping exclusively for our waitlist members.</p>
+                    <p>If you want first access + a free Essential Box, join the waitlist below.
+</p>
                     <input type="text" id="popup-user-name" name="name" placeholder="Your Name" required>
                     <input type="email" id="popup-user-email" name="email" placeholder="Your Email" required>
                     <input type="text" id="popup-user-instagram" name="instagram" placeholder="Your Instagram Handle" required>
@@ -357,7 +359,7 @@
             .then(data => {
                 if (data.success) {
                     console.log('Data submitted successfully:', data);
-                    alert('You’re now on the waitlist!\nYou’ll be the first to shop your Luxe Babe box + get a free Essential Box when we go live.\nDon’t forget to follow us on Instagram (@thesoftbabelagoss) We’ll be sharing exclusive updates and sneak peeks on Close Friends');
+                    alert('You’re now on the waitlist!\nYou’ll be the first to shop your Softbabe box + get a free Essential Box when we go live.\nDon’t forget to follow us on Instagram (@thesoftbabelagoss) We’ll be sharing exclusive updates and sneak peeks on Close Friends');
                     closePopup();
                 } else {
                     console.error('Submission error:', data.message);
