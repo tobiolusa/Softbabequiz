@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: https://quiz.softbabelagos.com');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
@@ -40,25 +40,50 @@ if (!empty($errors)) {
     exit;
 }
 
-$to = 'info@quiz.softbabelagos.com';
-$subject = 'Softbabe Quiz Submission';
-$body = "New Softbabe Quiz Submission\n\n";
-$body .= "Form Data:\n";
-$body .= "Name: $name\n";
-$body .= "Email: $email\n";
-$body .= "Instagram Handle: $instagram\n\n";
-$body .= "Quiz Data:\n";
-$body .= "Final Result: $finalResult\n";
-$body .= "Answers: $answers\n";
-$headers = "From: no-reply@quiz.softbabelagos.com\r\n";
-$headers .= "Reply-To: $email\r\n";
+// Admin email
+$to_admin = 'info@quiz.softbabelagos.com';
+$subject_admin = 'Softbabe Quiz Submission';
+$body_admin = "New Softbabe Quiz Submission\n\n";
+$body_admin .= "Form Data:\n";
+$body_admin .= "Name: $name\n";
+$body_admin .= "Email: $email\n";
+$body_admin .= "Instagram Handle: $instagram\n\n";
+$body_admin .= "Quiz Data:\n";
+$body_admin .= "Final Result: $finalResult\n";
+$body_admin .= "Answers: $answers\n";
+$headers_admin = "From: info@quiz.softbabelagos.com\r\n";
+$headers_admin .= "Reply-To: $email\r\n";
+$headers_admin .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-$mailSent = mail($to, $subject, $body, $headers);
+// User confirmation email
+$to_user = $email;
+$subject_user = 'You’re officially on the Softbabe waitlist 💋';
+$body_user = "Hey babe,\n\n";
+$body_user .= "You just took the first step to finding your Softbabe style and we’re obsessed already.\n\n";
+$body_user .= "And now that you’re officially on the waitlist, here’s the tea:\n\n";
+$body_user .= "Only 100 Softbabe Boxes are being released first\n";
+$body_user .= "Each one is handpicked, curated to your style, and comes with an exclusive Softbabe essential purse.\n\n";
+$body_user .= "As a waitlist babe, you’ll get early access to pre-order before the official drop\n";
+$body_user .= "Once they’re gone, they’re gone.\n";
+$body_user .= "No restocks on this drop.\n\n";
+$body_user .= "Pre-order your Softbabe Box & Essential Purse now — secure your spot before it sells out.\n\n";
+$body_user .= "With love,\n";
+$body_user .= "Softbabe Lagos 💕\n\n";
+$body_user .= "[Take the Quiz Again] or [Share with a Friend] [Preorder your Box]\n";
+$body_user .= "Take the Quiz Again: https://quiz.softbabelagos.com\n";
+$body_user .= "Share with a Friend: https://quiz.softbabelagos.com\n";
+$body_user .= "Preorder your Box: https://quiz.softbabelagos.com\n";
+$headers_user = "From: info@quiz.softbabelagos.com\r\n";
+$headers_user .= "Reply-To: info@quiz.softbabelagos.com\r\n";
+$headers_user .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-if ($mailSent) {
+$mail_admin_sent = mail($to_admin, $subject_admin, $body_admin, $headers_admin);
+$mail_user_sent = mail($to_user, $subject_user, $body_user, $headers_user);
+
+if ($mail_admin_sent && $mail_user_sent) {
     echo json_encode(['success' => true, 'message' => 'Data submitted successfully']);
 } else {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Failed to send email']);
+    echo json_encode(['success' => false, 'message' => 'Failed to send one or both emails']);
 }
 ?>

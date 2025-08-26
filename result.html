@@ -293,9 +293,8 @@
             <form id="popup-user-form">
                 <div class="form-container">
                     <h2 style="font-size: 30px;">We Are Curating Your <br>Perfect Jewelry Box</h2>
-                    <p style="font-size: 17px;" >This style is dropping exclusively for our waitlist members.</p>
-                    <p style="font-size: 17px;">If you want first access + a free Essential Box, join the waitlist below.
-</p>
+                    <p style="font-size: 17px;">This style is dropping exclusively for our waitlist members.</p>
+                    <p style="font-size: 17px;">If you want first access + a free Essential Box, join the waitlist below.</p>
                     <input type="text" id="popup-user-name" name="name" placeholder="Your Name" required>
                     <input type="email" id="popup-user-email" name="email" placeholder="Your Email" required>
                     <input type="text" id="popup-user-instagram" name="instagram" placeholder="Your Instagram Handle" required>
@@ -359,7 +358,7 @@
             .then(data => {
                 if (data.success) {
                     console.log('Data submitted successfully:', data);
-                    alert('You’re now on the waitlist!\nYou’ll be the first to shop your Softbabe box + get a free Essential Box when we go live.\nDon’t forget to follow us on Instagram (@thesoftbabelagoss) We’ll be sharing exclusive updates and sneak peeks on Close Friends');
+                    alert('You’re now on the waitlist!\nYou’ll be the first to shop your Softbabe box + get a free Essential Box when we go live.\nDon’t forget to follow us on Instagram (@thesoftbabelagos) We’ll be sharing exclusive updates and sneak peeks on Close Friends');
                     closePopup();
                 } else {
                     console.error('Submission error:', data.message);
@@ -431,15 +430,15 @@
             const resultTitle = document.getElementById('result-title').innerText;
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at Softbabe Lagos!`);
-            const url = encodeURIComponent('https://softbabequiz.vercel.app');
+            const url = encodeURIComponent('https://quiz.softbabelagos.com');
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
         }
 
         function shareOnWhatsApp() {
             const resultTitle = document.getElementById('result-title').innerText;
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
-            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at softbabequiz.vercel.app/form.html! #SoftbabeLagos`);
-            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
+            const text = encodeURIComponent(`I'm a ${style}! Discover your Softbabe Style at quiz.softbabelagos.com/form.html! #SoftbabeLagos`);
+            const url = encodeURIComponent('https://quiz.softbabelagos.com/form.html');
             window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
         }
 
@@ -447,14 +446,14 @@
             const resultTitle = document.getElementById('result-title').innerText;
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
             const text = encodeURIComponent(`I'm a ${style}! Find your Softbabe Style! #SoftbabeLagos`);
-            const url = encodeURIComponent('https://softbabequiz.vercel.app/form.html');
+            const url = encodeURIComponent('https://quiz.softbabelagos.com/form.html');
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
         }
 
         function shareOnInstagram() {
             const resultTitle = document.getElementById('result-title').innerText;
             const style = resultTitle.split('You’re a ')[1]?.replace('!', '') || 'Softbabe';
-            alert(`To share your result on Instagram:\n1. Take a screenshot of this page.\n2. Post it to your Instagram feed or story with the caption:\n"I'm a ${style}! Discover your Softbabe Style at softbabequiz.vercel.app! #SoftbabeLagos"\n3. Tag @softbabelagos for a chance to be featured!`);
+            alert(`To share your result on Instagram:\n1. Take a screenshot of this page.\n2. Post it to your Instagram feed or story with the caption:\n"I'm a ${style}! Discover your Softbabe Style at quiz.softbabelagos.com! #SoftbabeLagos"\n3. Tag @thesoftbabelagos for a chance to be featured!`);
         }
 
         function retakeQuiz() {
@@ -525,7 +524,7 @@
 
             const resultImage = document.getElementById('result-image');
             const styleImages = {
-                'Trendsetter Babe': 'result/trendsetter.jpeg', 
+                'Trendsetter Babe': 'result/Trendsetter.jpeg',
                 'Luxe Babe': 'result/luxe.jpeg',
                 'Romantic Babe': 'result/romantic.jpeg',
                 'Boss Babe': 'result/bossbabe.jpeg',
